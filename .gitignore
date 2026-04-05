@@ -29,6 +29,9 @@
 !/tmp/storage/
 !/tmp/storage/.keep
 
+# Track SQLite files in db/.
+!/db/*.sqlite3
+
 /public/assets
 
 # Ignore master key for decrypting credentials and more.
