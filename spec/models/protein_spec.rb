@@ -31,4 +31,31 @@ RSpec.describe Protein, type: :model do
       expect(duplicate.errors[:uniprot_accession]).to include('has already been taken')
     end
   end
+
+  describe '#uniprot_entry' do
+    before do
+      connection = Uniprot::Entry.connection
+      next if connection.table_exists?(:entries)
+
+      connection.create_table :entries do |t|
+        t.string :accession
+        t.string :name
+      end
+    end
+
+    it 'returns matching uniprot entry by accession' do
+      Uniprot::Entry.delete_all
+      protein = described_class.create!(uniprot_accession: 'P04637')
+      entry = Uniprot::Entry.create!(accession: 'P04637', name: 'Cellular tumor antigen p53')
+
+      expect(protein.uniprot_entry).to eq(entry)
+    end
+
+    it 'returns nil when no uniprot entry matches' do
+      Uniprot::Entry.delete_all
+      protein = described_class.create!(uniprot_accession: 'Q99999')
+
+      expect(protein.uniprot_entry).to be_nil
+    end
+  end
 end
