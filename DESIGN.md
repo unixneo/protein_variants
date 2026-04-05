@@ -258,7 +258,7 @@ Examples:
 
 The system should prefer:
 - a small primary application database
-- multiple sidecar SQLite databases for external sources
+- multiple data-centricr SQLite databases for external sources
 - explicit import, mapping, or query logic between them
 
 This avoids:
@@ -280,7 +280,7 @@ It does not target a separate production deployment architecture, and it does no
 The system is built around:
 
 - a primary development SQLite database
-- multiple development sidecar SQLite databases
+- multiple development data-centric SQLite databases
 - direct, explicit querying of those databases
 
 The focus is reproducible scientific development, inspection, and validation, not multi-environment deployment.
