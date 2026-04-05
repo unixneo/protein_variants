@@ -1,5 +1,65 @@
 # TODO
 
+## Scientific Objective
+- This project is a controlled experiment:
+  Can an LLM-built deterministic system produce scientifically valid results when compared to peer-reviewed data?
+- Initial focus: TP53 missense variants (UniProt: P04637).
+
+## Data Sources (SQLite Databases)
+- Main DB (`db/development.sqlite3`)
+  - `proteins`
+  - `variants`
+  - `protein_features`
+  - `structure_entries`
+- UniProt DB (`db/uniprot.sqlite3`)
+  - sequence
+  - canonical accession (P04637)
+  - curated features (domains, functional regions)
+- PDB DB (`db/pdb.sqlite3`)
+  - structures
+  - residue coverage
+  - chain mappings
+- Planned
+  - ClinVar DB (clinical classification)
+  - MaveDB DB (functional assay scores)
+
+## Calculations (Deterministic Pipeline)
+- Input: missense variant (e.g. `p.R175H`).
+- Steps:
+  - parse HGVS -> residue position
+  - verify against UniProt sequence
+  - DomainMapper -> check UniProt features
+  - StructureMapper -> check PDB coverage
+  - RuleEngine -> compute deterministic score
+- Scoring:
+  - +2 domain hit
+  - +2 structure hit
+  - (+future flags)
+- Classification:
+  - low / moderate / high
+
+## Blackboard Knowledge Sources
+- KS: DomainMapper (UniProt)
+- KS: StructureMapper (PDB)
+- KS: RuleEngine (classification)
+- KS: Validator (planned)
+
+## Validation Plan (Critical)
+- Compare computed classifications against:
+  - TP53 functional datasets:
+    - Kotler et al. 2018
+    - Giacomelli et al. 2018
+  - MaveDB TP53 score sets
+  - ClinVar (secondary comparator)
+- Goal: measure agreement between system output and known experimental results.
+
+## Initial Variant Set
+- `p.R175H`
+- `p.G245S`
+- `p.R248Q`
+- `p.R273H`
+- `p.Y220C`
+
 ## Scientific Objective and Blackboard KS Plan
 - 🟢 Scientific objective is defined as deterministic missense interpretation for TP53 with structural/functional context.
 - 🟢 Current system is deterministic and inspectable, not an AI prediction system.
@@ -43,6 +103,7 @@
 ## Variant Interpretation
 - 🟢 `VariantInterpretationService` implemented with deterministic rules.
 - 🟢 Outputs include domain/structure hits, matching features/structures, preliminary mechanism, and confidence.
+- 🟡 Expand deterministic scoring to explicit low/moderate/high rule outputs.
 
 ## UI (Inspection Interface)
 - 🟢 Dark, card-based inspection UI is implemented with ERB + CSS.
@@ -69,9 +130,11 @@
 - 🟢 Main app and external source data are isolated in separate SQLite files.
 - 🟢 Cross-database access is performed through explicit lookups, not associations.
 - 🟡 Formalize mapping rules for integrating external records into app-level inspection workflows.
+- 🟡 Add planned ClinVar and MaveDB SQLite sources for comparator data.
 
 ## Next Steps (Immediate)
 - 🟡 Implement `Protein` → `Pdb::Structure` lookup method following existing lookup style.
 - 🟡 Add UI display blocks for external lookup results on protein and/or variant pages.
 - 🟡 Define and document concrete identifier/position mapping strategy across main, Uniprot, and PDB datasets.
 - 🟡 Prepare additional external source scaffolding for ClinVar and MaveDB with dedicated abstract base records.
+- 🟡 Execute validation against Kotler 2018, Giacomelli 2018, MaveDB TP53 sets, and ClinVar as secondary comparator.
