@@ -89,4 +89,73 @@ RSpec.describe Variant, type: :model do
       expect(variant.errors[:protein]).to include('must exist')
     end
   end
+
+  describe '#mavedb_score' do
+    before do
+      connection = Mavedb::Score.connection
+      next if connection.table_exists?(:scores)
+
+      connection.create_table :scores do |t|
+        t.string :hgvs_pro
+        t.float :score
+        t.string :score_set_urn
+        t.string :source
+      end
+    end
+
+    it 'returns the matching mavedb score and excludes non-matching records' do
+      Mavedb::Score.delete_all
+      variant = described_class.create!(
+        protein: protein,
+        hgvs_protein: 'p.Arg175His',
+        residue_position: 175,
+        ref_aa: 'R',
+        alt_aa: 'H'
+      )
+      match = Mavedb::Score.create!(hgvs_pro: 'p.Arg175His', score: 1.025, source: 'Giacomelli2018')
+      non_match = Mavedb::Score.create!(hgvs_pro: 'p.Arg999Xxx', score: 0.1, source: 'Giacomelli2018')
+
+      expect(variant.mavedb_score).to eq(match)
+      expect(variant.mavedb_score).not_to eq(non_match)
+    end
+  end
+
+  describe '#clinvar_classification' do
+    before do
+      connection = Clinvar::Classification.connection
+      next if connection.table_exists?(:classifications)
+
+      connection.create_table :classifications do |t|
+        t.string :hgvs_pro
+        t.string :variation_id
+        t.string :clinical_significance
+        t.string :review_status
+        t.string :last_evaluated
+      end
+    end
+
+    it 'returns the matching clinvar classification and excludes non-matching records' do
+      Clinvar::Classification.delete_all
+      variant = described_class.create!(
+        protein: protein,
+        hgvs_protein: 'p.Arg175His',
+        residue_position: 175,
+        ref_aa: 'R',
+        alt_aa: 'H'
+      )
+      match = Clinvar::Classification.create!(
+        hgvs_pro: 'p.Arg175His',
+        clinical_significance: 'Pathogenic',
+        review_status: 'reviewed by expert panel'
+      )
+      non_match = Clinvar::Classification.create!(
+        hgvs_pro: 'p.Arg999Xxx',
+        clinical_significance: 'Benign',
+        review_status: 'no assertion criteria provided'
+      )
+
+      expect(variant.clinvar_classification).to eq(match)
+      expect(variant.clinvar_classification).not_to eq(non_match)
+    end
+  end
 end
