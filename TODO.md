@@ -81,13 +81,6 @@ The LLM experiment is the primary goal. TP53 missense interpretation is the test
 - 🟢 Context window cost identified as structural economic constraint (Error 23)
 - 🟢 All findings documented in PAPER.md sections 6.2, 6.3, 6.4
 
-## Next Steps
-- 🟡 Start new conversation for any further work (context window hygiene)
-- 🟢 Expand scoring to explicit low/moderate/high classification
-- 🟢 Add specs for Mavedb::Score and Clinvar::Classification models
-- 🟡 Extend benchmark set to variants with intermediate or uncertain functional classification
-- 🟡 Consider formal submission of PAPER.md as a short methods/research note
-
 ## Next Steps (Start Fresh Session)
 - 🟡 Start new conversation for any further work (context window hygiene -- Error 23)
 - 🟢 Expand scoring to explicit low/moderate/high classification
