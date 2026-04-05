@@ -235,7 +235,19 @@ This failure mode is not unique to this project. Any research project where the 
 
 The fact that this failure occurred despite the primary goal being clearly documented in TODO.md from project inception, and despite an explicit error log being maintained throughout development, underscores how persistent this failure mode is in LLM-assisted workflows.
 
-### 6.4 Scope and Limitations
+### 6.4 Economic Constraint: Context Window Cost
+
+A practical finding from this project is that context window cost is a significant and underappreciated constraint on LLM-assisted scientific development for paying users on limited plans.
+
+In a long working session, every exchange re-processes the entire conversation history. File reads, code reviews, documentation updates, and pasted outputs all accumulate in context and do not leave. As the session grows, the cost per exchange becomes proportional to the total session history rather than to the work actually being done. In one observed case, a modest amount of work -- a few prompts, some documentation updates, a commit -- consumed over 41% of a Pro plan usage limit.
+
+This is a structural economic problem, not a user error. It affects any long-running project where context naturally accumulates: multi-file codebases, extensive documentation, iterative debugging cycles, and research workflows where prior decisions must be remembered across many exchanges.
+
+The corrective discipline is to start a new conversation when returning to a project rather than continuing an existing one. This requires that the project's state be fully recoverable from committed artefacts -- which is exactly what the .md files (README, TODO, DESIGN, CLAUDE_ERRORS) in this project are designed to support. A well-maintained set of project documents functions as an external memory system that makes fresh sessions viable without loss of context.
+
+This finding has direct implications for the economics of LLM-assisted scientific development at scale. Projects that span days or weeks of iterative work will consume disproportionate token budgets if session hygiene is not enforced. This constraint should be factored into any cost model for LLM-assisted research workflows.
+
+### 6.5 Scope and Limitations
 
 - The benchmark variant set is limited to five well-characterized hotspots. Extension to variants with intermediate or uncertain functional classification will provide a more rigorous test.
 - Confidence scoring is currently binary (medium/low). Quantitative evidence-weighted scoring is a planned next step.

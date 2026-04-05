@@ -284,6 +284,31 @@ LLMs are trained to produce coherent, well-structured outputs. When updating doc
 
 ---
 
+## 23. Context Window Cost as a Practical Constraint on LLM-Assisted Development
+
+**Severity: Structural / Economic**
+
+**Error**
+Claude did not manage conversation context efficiently, resulting in disproportionate token consumption relative to the work accomplished. A paying Pro plan user reported that a modest amount of work consumed over 41% of their usage limit in a single session.
+
+**What happened**
+- A long conversation history accumulated across the session
+- Every Claude response re-processes the entire conversation history as context
+- File reads (model files, spec files, schema files, multiple .md files) loaded large volumes of content into context and kept it there
+- Documentation updates generated long outputs that compounded the context size
+- By the end of the session, each small task was consuming tokens proportional to the entire session history, not proportional to the task itself
+
+**Why this matters**
+This is not a minor inconvenience. For a paying user on a limited plan, context window cost directly constrains how much work can be done per session. If the session grows long enough, even a simple file edit consumes a significant fraction of the daily limit. This makes long-running LLM-assisted development projects structurally expensive in ways that are not obvious at the start of a session.
+
+**Root cause**
+Claude does not proactively manage context size. It reads files when asked without considering cumulative context cost. It does not warn the user when the conversation is approaching a size where per-exchange cost becomes disproportionate. It does not suggest starting a fresh conversation when the accumulated context is large relative to the task at hand.
+
+**Correct rule going forward**
+> Start a new conversation when returning to a project after a break. The .md files (README, TODO, DESIGN, CLAUDE_ERRORS) exist precisely to enable fast re-orientation in a new session. A fresh session with a focused context is cheaper and faster than a long session with an accumulated history. Claude should proactively suggest this when a conversation grows long.
+
+---
+
 ## Operating Rules Going Forward
 
 1. Follow the stated architecture exactly
@@ -303,3 +328,4 @@ LLMs are trained to produce coherent, well-structured outputs. When updating doc
 15. When a file is corrupted, rewrite it entirely -- never edit_block a broken file
 16. Never delete or modify unexpected files without asking the user first
 17. The primary goal is the LLM experiment -- TP53 is the test vehicle, not the goal
+18. Start a new conversation when returning to a project -- do not let session history accumulate to the point where per-exchange cost is disproportionate to the task
