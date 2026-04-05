@@ -86,3 +86,18 @@ The LLM experiment is the primary goal. TP53 missense interpretation is the test
 - 🟡 Add specs for Mavedb::Score and Clinvar::Classification models
 - 🟡 Extend benchmark set to variants with intermediate or uncertain functional classification
 - 🟡 Consider formal submission of PAPER.md as a short methods/research note
+
+## Next Steps (Start Fresh Session)
+- 🟡 Start new conversation for any further work (context window hygiene -- Error 23)
+- 🟡 Expand scoring to explicit low/moderate/high classification
+- 🟡 Add specs for Mavedb::Score and Clinvar::Classification models
+- 🟡 Extend benchmark set to variants with intermediate or uncertain functional classification
+- 🟡 Consider formal submission of PAPER.md as a short methods/research note
+
+## Future Extensions (Beyond TP53)
+- 🟡 Extend to tau (UniProt P10636): map microtubule-binding region as ProteinFeature, load PDB structures of tau bound to tubulin
+- 🟡 Extend to APP/amyloid-beta (UniProt P05067): annotate amyloid-beta peptide region and structural context
+- 🟡 Compare tau microtubule-binding sequence region against amyloid-beta sequence for overlap
+  -- basis of Julian et al. 2026 competitive binding hypothesis (doi:10.1093/pnasnexus/pgag034)
+- 🟡 Would not simulate molecular dynamics -- provides deterministic structural context
+  for reasoning about binding competition at sequence/domain level

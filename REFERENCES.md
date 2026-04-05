@@ -229,3 +229,31 @@ Do not treat all sources as equivalent.
 - **ClinVar** = curated clinical interpretation, not pure experimental truth
 - **peer-reviewed TP53 papers** = primary scientific benchmark
 
+
+---
+
+## 8. Future Extension Reference
+
+### Julian et al. 2026 — Competitive Binding of Amyloid-Beta and Tau at Microtubules
+
+**Use in project**
+- Basis for planned extension to tau (UniProt P10636) and APP/amyloid-beta (UniProt P05067)
+- Supports sequence-level reasoning about binding site competition between the two
+  hallmark Alzheimer's proteins as a structural/functional annotation problem
+- Demonstrates that the protein_variants blackboard architecture is extensible beyond TP53
+
+**Reference**
+- Julian R, et al. (2026). Key Alzheimer's proteins are competing inside brain cells.
+  PNAS Nexus. doi:10.1093/pnasnexus/pgag034
+
+**Source article**
+- https://www.sciencealert.com/new-unifying-theory-may-explain-how-alzheimers-emerges-in-the-brain
+
+**Notes**
+- Amyloid-beta peptides resemble the microtubule-binding sequence region of tau
+- Competition for the same microtubule binding sites may explain how amyloid-beta
+  disrupts tau function, linking the two hallmarks of Alzheimer's disease
+- Experiments used purified proteins in solution -- not cellular or in vivo simulation
+- Computational extension in protein_variants would map sequence features and
+  structural coverage deterministically, not simulate molecular dynamics
+- Full molecular dynamics simulation is out of scope for this project
