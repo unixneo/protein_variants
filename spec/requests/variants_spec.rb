@@ -33,7 +33,7 @@ RSpec.describe 'Variants', type: :request do
       expect(response.body).to include('Variant Summary')
       expect(response.body).to include('Interpretation')
       expect(response.body).to include('structured functional region')
-      expect(response.body).to include('medium')
+      expect(response.body).to include('high')
       expect(response.body).to include('Matching Features')
       expect(response.body).to include('DNA-binding')
       expect(response.body).to include('Matching Structures')

@@ -128,7 +128,11 @@
         <dt>System Mechanism</dt>
         <dd><%= @evidence[:system_mechanism] %></dd>
         <dt>System Confidence</dt>
-        <dd><%= @evidence[:system_confidence] %></dd>
+        <dd class="confidence-<%= @evidence[:system_confidence] %>"><%= @evidence[:system_confidence].to_s.capitalize %></dd>
+        <dt>Combined Confidence</dt>
+        <dd class="confidence-<%= @evidence[:confidence_level] %>"><%= @evidence[:confidence_level].to_s.capitalize %></dd>
+        <dt>Structural / Evidence Score</dt>
+        <dd><%= @evidence[:structural_confidence_score].to_i %> / <%= @evidence[:evidence_confidence_score].to_i %></dd>
         <dt>MaveDB Agreement</dt>
         <dd><%= @evidence.dig(:mavedb, :agreement) %> — <%= @evidence.dig(:mavedb, :note) %></dd>
         <dt>ClinVar Agreement</dt>

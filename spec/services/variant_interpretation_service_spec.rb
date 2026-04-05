@@ -15,7 +15,7 @@ RSpec.describe VariantInterpretationService do
 
   describe ".call" do
     context "when domain and structure both match" do
-      it "returns structured functional region with medium confidence and matching payloads" do
+      it "returns structured functional region with high confidence and matching payloads" do
         protein.protein_features.create!(
           feature_type: "domain",
           start_pos: 100,
@@ -35,7 +35,8 @@ RSpec.describe VariantInterpretationService do
           chain_id: "A",
           start_pos: 90,
           end_pos: 210,
-          method: "X-ray diffraction"
+          method: "X-ray diffraction",
+          resolution: 1.8
         )
         protein.structure_entries.create!(
           pdb_id: "9XXX",
@@ -57,7 +58,8 @@ RSpec.describe VariantInterpretationService do
         expect(result[:domain_hit]).to be(true)
         expect(result[:structure_hit]).to be(true)
         expect(result[:preliminary_mechanism]).to eq("structured functional region")
-        expect(result[:confidence]).to eq("medium")
+        expect(result[:structural_confidence_score]).to eq(60)
+        expect(result[:confidence]).to eq(:high)
         expect(result[:matching_features]).to eq(
           [
             {
@@ -83,7 +85,7 @@ RSpec.describe VariantInterpretationService do
     end
 
     context "when only domain matches" do
-      it "returns annotated functional region with low confidence" do
+      it "returns annotated functional region with moderate confidence" do
         protein.protein_features.create!(
           feature_type: "domain",
           start_pos: 100,
@@ -105,7 +107,8 @@ RSpec.describe VariantInterpretationService do
         expect(result[:domain_hit]).to be(true)
         expect(result[:structure_hit]).to be(false)
         expect(result[:preliminary_mechanism]).to eq("annotated functional region")
-        expect(result[:confidence]).to eq("low")
+        expect(result[:structural_confidence_score]).to eq(30)
+        expect(result[:confidence]).to eq(:moderate)
         expect(result[:matching_features]).to eq(
           [
             {
@@ -143,7 +146,8 @@ RSpec.describe VariantInterpretationService do
         expect(result[:domain_hit]).to be(false)
         expect(result[:structure_hit]).to be(true)
         expect(result[:preliminary_mechanism]).to eq("structured region")
-        expect(result[:confidence]).to eq("low")
+        expect(result[:structural_confidence_score]).to eq(20)
+        expect(result[:confidence]).to eq(:low)
         expect(result[:matching_features]).to eq([])
         expect(result[:matching_structures]).to eq(
           [
@@ -182,7 +186,8 @@ RSpec.describe VariantInterpretationService do
         expect(result[:domain_hit]).to be(false)
         expect(result[:structure_hit]).to be(false)
         expect(result[:preliminary_mechanism]).to eq("unannotated region")
-        expect(result[:confidence]).to eq("low")
+        expect(result[:structural_confidence_score]).to eq(0)
+        expect(result[:confidence]).to eq(:low)
         expect(result[:matching_features]).to eq([])
         expect(result[:matching_structures]).to eq([])
       end

@@ -21,12 +21,16 @@ class EvidenceValidatorService
 
     mavedb_agreement = assess_mavedb(mavedb)
     clinvar_agreement = assess_clinvar(clinvar)
+    evidence_score = evidence_confidence_score(mavedb, clinvar)
 
     {
       variant_id: @variant.id,
       hgvs_protein: @variant.hgvs_protein,
       system_mechanism: @interpretation[:preliminary_mechanism],
       system_confidence: @interpretation[:confidence],
+      structural_confidence_score: @interpretation[:structural_confidence_score],
+      evidence_confidence_score: evidence_score,
+      confidence_level: combined_confidence_level(evidence_score),
       mavedb: {
         score: mavedb&.score,
         source: mavedb&.source,
@@ -97,5 +101,36 @@ class EvidenceValidatorService
     return :agree if statuses.reject { |s| s == :no_data }.all? { |s| s == :agree }
 
     :disagree
+  end
+
+  def evidence_confidence_score(mavedb, clinvar)
+    mavedb_axis_score(mavedb) + clinvar_axis_score(clinvar)
+  end
+
+  def combined_confidence_level(evidence_score)
+    total = @interpretation[:structural_confidence_score].to_i + evidence_score
+    return :high if total >= 70
+    return :moderate if total >= 40
+
+    :low
+  end
+
+  def mavedb_axis_score(mavedb)
+    return 0 unless mavedb
+    return 20 if mavedb.score >= 0.7
+    return 10 if mavedb.score >= 0.5
+
+    0
+  end
+
+  def clinvar_axis_score(clinvar)
+    return 0 unless clinvar
+
+    expert_panel = clinvar.review_status.to_s.downcase.include?("expert panel")
+    pathogenic = CLINVAR_PATHOGENIC.include?(clinvar.clinical_significance)
+
+    score = expert_panel ? 15 : 0
+    score += 5 if pathogenic && !expert_panel
+    score
   end
 end

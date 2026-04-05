@@ -14,6 +14,11 @@ class VariantInterpretationService
     structure_matches = matching_structure_records
     domain_hit = feature_matches.any?
     structure_hit = structure_matches.any?
+    score = structural_confidence_score(
+      domain_hit: domain_hit,
+      structure_hit: structure_hit,
+      structure_matches: structure_matches
+    )
 
     {
       variant_id: @variant.id,
@@ -40,7 +45,8 @@ class VariantInterpretationService
         }
       end,
       preliminary_mechanism: preliminary_mechanism(domain_hit, structure_hit),
-      confidence: domain_hit && structure_hit ? "medium" : "low"
+      structural_confidence_score: score,
+      confidence: structural_confidence_level(score)
     }
   end
 
@@ -60,5 +66,31 @@ class VariantInterpretationService
     return "structured region" if structure_hit
 
     "unannotated region"
+  end
+
+  def structural_confidence_score(domain_hit:, structure_hit:, structure_matches:)
+    domain_axis_score(domain_hit) +
+      structure_axis_score(structure_hit) +
+      resolution_axis_score(structure_matches)
+  end
+
+  def structural_confidence_level(score)
+    return :high if score >= 45
+    return :moderate if score >= 25
+
+    :low
+  end
+
+  def domain_axis_score(domain_hit)
+    domain_hit ? 30 : 0
+  end
+
+  def structure_axis_score(structure_hit)
+    structure_hit ? 20 : 0
+  end
+
+  def resolution_axis_score(structure_matches)
+    best_resolution = structure_matches.map(&:resolution).compact.map(&:to_f).min
+    best_resolution && best_resolution <= 2.0 ? 10 : 0
   end
 end

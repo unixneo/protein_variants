@@ -51,7 +51,8 @@ RSpec.describe EvidenceValidatorService do
       )
       interpretation = {
         preliminary_mechanism: "structured functional region",
-        confidence: "medium",
+        confidence: :high,
+        structural_confidence_score: 60,
         domain_hit: true,
         structure_hit: true
       }
@@ -60,6 +61,8 @@ RSpec.describe EvidenceValidatorService do
 
       expect(result.dig(:mavedb, :agreement)).to eq(:agree)
       expect(result.dig(:clinvar, :agreement)).to eq(:agree)
+      expect(result[:evidence_confidence_score]).to eq(35)
+      expect(result[:confidence_level]).to eq(:high)
       expect(result[:overall_agreement]).to eq(:agree)
     end
 
@@ -87,7 +90,8 @@ RSpec.describe EvidenceValidatorService do
       )
       interpretation = {
         preliminary_mechanism: "unannotated region",
-        confidence: "low",
+        confidence: :low,
+        structural_confidence_score: 0,
         domain_hit: false,
         structure_hit: false
       }
@@ -96,6 +100,8 @@ RSpec.describe EvidenceValidatorService do
 
       expect(result.dig(:mavedb, :agreement)).to eq(:disagree)
       expect(result.dig(:clinvar, :agreement)).to eq(:disagree)
+      expect(result[:evidence_confidence_score]).to eq(35)
+      expect(result[:confidence_level]).to eq(:low)
       expect(result[:overall_agreement]).to eq(:disagree)
     end
 
@@ -112,7 +118,8 @@ RSpec.describe EvidenceValidatorService do
       )
       interpretation = {
         preliminary_mechanism: "unannotated region",
-        confidence: "low",
+        confidence: :low,
+        structural_confidence_score: 0,
         domain_hit: false,
         structure_hit: false
       }
@@ -121,6 +128,8 @@ RSpec.describe EvidenceValidatorService do
 
       expect(result.dig(:mavedb, :agreement)).to eq(:no_data)
       expect(result.dig(:clinvar, :agreement)).to eq(:no_data)
+      expect(result[:evidence_confidence_score]).to eq(0)
+      expect(result[:confidence_level]).to eq(:low)
       expect(result[:overall_agreement]).to eq(:no_data)
     end
   end
