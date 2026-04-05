@@ -8,21 +8,39 @@
 
 ## Abstract
 
-We describe a small, deterministic software system for interpreting missense variants in the TP53 tumor suppressor protein. The system follows a blackboard architecture in which independent Knowledge Sources (KSs) contribute structural and functional annotations from curated external databases. Variant interpretation is rule-based and fully inspectable, with no probabilistic or machine learning inference. We evaluate the system against five benchmark TP53 missense variants using functional scores from two MaveDB score sets (Giacomelli et al. 2018, Kotler et al. 2018) and clinical classifications from ClinVar. All five variants are correctly classified as residing in a structured functional region, with 100% agreement across both MaveDB score sets and ClinVar. The goal is not to outperform existing prediction tools, but to demonstrate that a minimal, transparent, engineering-first system can produce scientifically grounded, fully inspectable outputs that agree with peer-reviewed experimental evidence.
+This paper describes a controlled experiment in LLM-assisted scientific software development. The central question is: can a deterministic system built primarily using large language models produce scientifically valid results when evaluated against peer-reviewed experimental data?
+
+The experimental vehicle is a small, deterministic software system for interpreting missense variants in the TP53 tumor suppressor protein. The system follows a blackboard architecture in which independent Knowledge Sources (KSs) contribute structural and functional annotations from curated external databases. Variant interpretation is rule-based and fully inspectable, with no probabilistic or machine learning inference. We evaluate the system against five benchmark TP53 missense variants using functional scores from two MaveDB score sets (Giacomelli et al. 2018, Kotler et al. 2018) and clinical classifications from ClinVar. All five variants are correctly classified as residing in a structured functional region, with 100% agreement across both MaveDB score sets and ClinVar.
+
+The system was built using a two-stage workflow: Claude (Anthropic) served as architect, scientist, and prompt author; Codex CLI served as code implementer. Documented failure modes and corrective operating rules are maintained as a project artifact (CLAUDE_ERRORS.md). The development process itself is part of the research record.
 
 ---
 
 ## 1. Introduction
 
-TP53 is the most frequently mutated gene in human cancer. Missense variants in TP53 vary widely in their functional consequences: some abolish DNA-binding activity, others have intermediate effects, and some are functionally neutral. Existing computational tools for variant effect prediction (e.g., SIFT, PolyPhen, AlphaMissense) use probabilistic and ML-based approaches that are opaque and difficult to validate step-by-step.
+### 1.1 The Experiment
 
-This work takes a different approach. We build the smallest deterministic system that can:
+This project addresses a direct question about LLM-assisted scientific software development: can a system built primarily using LLMs produce outputs that are scientifically valid when measured against peer-reviewed experimental data?
+
+The answer is not obvious. LLMs are known to drift from stated objectives, hallucinate solutions, and lose constraint tracking across iterative sessions. If these failure modes are allowed to propagate unchecked into a scientific software system, the outputs may appear technically correct while being scientifically wrong. The discipline required to prevent this -- validation-first development, explicit knowledge source decomposition, data-before-code engineering order -- is difficult to maintain under LLM-assisted development pressure.
+
+This paper documents both the system and the process used to build it.
+
+### 1.2 Scientific Test Domain
+
+TP53 is the most frequently mutated gene in human cancer. Missense variants in TP53 vary widely in their functional consequences: some abolish DNA-binding activity, others have intermediate effects, and some are functionally neutral. Large-scale experimental datasets (MaveDB) and curated clinical classifications (ClinVar) provide ground truth against which a computational system's outputs can be evaluated.
+
+This makes TP53 an ideal test domain: the science is well-characterized, the validation data is publicly available, and the correct answers for canonical hotspot variants are unambiguous.
+
+### 1.3 System Approach
+
+We build the smallest deterministic system that can:
 
 1. Map a variant to its structural and functional context using curated data
 2. Apply explicit rules to generate an interpretation
-3. Compare that interpretation against experimental evidence
+3. Compare that interpretation against peer-reviewed experimental evidence
 
-The system is implemented as a Rails application with multiple SQLite databases, each representing a distinct scientific knowledge source. The architecture follows the blackboard model, in which a central workspace is updated by independent KSs that each contribute one layer of annotation.
+The system uses no probabilistic or ML-based variant effect prediction. Every step is inspectable and traceable to its data source.
 
 ---
 
@@ -180,20 +198,30 @@ Agreement is expected for these well-characterized hotspot variants. The value o
 
 ## 6. Discussion
 
-### 6.1 Scope
+### 6.1 The Experiment Result
 
-This system is intentionally minimal. It does not attempt to predict variant pathogenicity from sequence alone, model protein folding, or replicate the full functionality of existing tools such as AlphaMissense or SIFT. Its purpose is to demonstrate that a transparent, step-by-step deterministic pipeline can produce outputs that are grounded in curated experimental data and verifiable at every stage.
+The central question was: can an LLM-built deterministic system produce scientifically valid results when evaluated against peer-reviewed experimental data?
 
-### 6.2 Limitations
+For this test case -- five canonical TP53 hotspot variants evaluated against two MaveDB score sets and ClinVar -- the answer is yes. The system produces 100% agreement across all comparators. The result is not surprising for these well-characterized variants, but it is meaningful: the LLM-assisted development process, when properly disciplined, did not introduce scientific errors into the pipeline.
 
-- The system uses a small curated set of protein features and structures. Expansion to the full UniProt feature set and all available PDB structures is planned.
+### 6.2 Development Process Observations
+
+The system was built using a two-stage workflow: Claude as architect and prompt author, Codex as implementer. Twenty-one documented failure modes were identified and recorded during development (CLAUDE_ERRORS.md). Key patterns:
+
+- LLMs drift from stated architecture when not explicitly constrained at each step
+- API attribute names and field paths must be verified with real data before any code is written -- LLMs will confidently specify wrong paths
+- Network environment assumptions do not transfer between the LLM's execution context and the user's local environment
+- Incremental edits to corrupted files compound the corruption -- full rewrites are safer
+- The "stop on error" instruction pattern is counterproductive with agentic coding tools
+
+The discipline that prevented scientific errors was the same discipline documented in CLAUDE_ERRORS.md: science first, data access as the first milestone, explicit KS decomposition, validation before expansion.
+
+### 6.3 Scope and Limitations
+
+- The benchmark variant set is limited to five well-characterized hotspots. Extension to variants with intermediate or uncertain functional classification will provide a more rigorous test.
 - Confidence scoring is currently binary (medium/low). Quantitative evidence-weighted scoring is a planned next step.
 - ClinVar review status varies across variants (expert panel vs. no assertion criteria), which is not yet used to weight agreement confidence.
-- The benchmark variant set is deliberately limited to five well-characterized hotspots. Extension to variants with intermediate or uncertain functional effects will provide a more rigorous test of the system.
-
-### 6.3 LLM-Assisted Development
-
-This system was developed using a two-stage human-AI workflow: Claude (Anthropic) served as architect and prompt author; Codex CLI served as code implementer. Documented failure modes and corrective rules are maintained in CLAUDE_ERRORS.md. This workflow is itself part of the research: the system is a test case for disciplined, validation-first LLM-assisted scientific software development.
+- The system uses a small curated set of protein features and structures. Expansion to the full UniProt annotation set and all available PDB structures is planned.
 
 ---
 

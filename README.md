@@ -2,16 +2,20 @@
 
 A Rails application for deterministic interpretation of protein missense variants.
 
-## Project Goal
+## Primary Goal
 
-Build an inspectable, engineering-focused system for deterministic interpretation of missense variants, starting with TP53. The system is a controlled experiment: can a deterministic, rule-based system produce scientifically valid results when compared to peer-reviewed experimental data?
+This project is a controlled experiment in LLM-assisted scientific software development:
 
-## Scientific Objective
+**Can an LLM-built deterministic system produce scientifically valid results when compared to peer-reviewed experimental data?**
 
-Initial target: TP53 (UniProt: P04637).
+The system is built using a two-stage human-AI workflow: Claude (Anthropic) acts as architect, scientist, and prompt author; Codex CLI acts as code implementer. Documented failure modes and operating rules are maintained in `CLAUDE_ERRORS.md`. The workflow itself is part of the research.
+
+## Scientific Test Vehicle
+
+The experiment uses TP53 missense variant interpretation as the test domain. TP53 is well-characterized, with large-scale experimental functional data (MaveDB) and curated clinical classifications (ClinVar) available for validation.
 
 Core scientific question:
-Given a missense variant, what is its likely structural/functional impact based on curated sequence, feature, and structure context, and does that assessment agree with experimental evidence?
+Given a missense variant, what is its likely structural/functional impact based on curated sequence, feature, and structure context -- and does the system's output agree with peer-reviewed experimental evidence?
 
 ## What the System Calculates
 
