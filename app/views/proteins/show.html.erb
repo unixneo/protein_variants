@@ -105,5 +105,49 @@
         <p class="inspection-empty">No variants available.</p>
       <% end %>
     <% end %>
+
+    <%= render layout: "shared/card", locals: { title: "UniProt Entry" } do %>
+      <% uniprot = @protein.uniprot_entry %>
+      <% if uniprot %>
+        <dl class="inspection-kv">
+          <dt>Accession</dt>
+          <dd><%= uniprot.accession %></dd>
+          <dt>Name</dt>
+          <dd><%= uniprot.name.presence || "-" %></dd>
+        </dl>
+      <% else %>
+        <p class="inspection-empty">No UniProt entry found for <%= @protein.uniprot_accession %>.</p>
+      <% end %>
+    <% end %>
+
+    <%= render layout: "shared/card", locals: { title: "PDB Structures (External)" } do %>
+      <% pdb_structures = @protein.pdb_structures %>
+      <% if pdb_structures.any? %>
+        <table class="inspection-table">
+          <thead>
+            <tr>
+              <th>PDB</th>
+              <th>Method</th>
+              <th>Resolution (Å)</th>
+              <th>Chain</th>
+              <th>Coverage</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% pdb_structures.each do |s| %>
+              <tr>
+                <td><%= s.pdb_id %></td>
+                <td><%= s.method.presence || "-" %></td>
+                <td><%= s.resolution.present? ? "%.2f" % s.resolution : "-" %></td>
+                <td><%= s.chain_id.presence || "-" %></td>
+                <td><%= s.start_pos && s.end_pos ? "#{s.start_pos}..#{s.end_pos}" : "-" %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      <% else %>
+        <p class="inspection-empty">No PDB structures found for <%= @protein.uniprot_accession %>.</p>
+      <% end %>
+    <% end %>
   </section>
 </main>
