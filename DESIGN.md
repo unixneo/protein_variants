@@ -163,3 +163,66 @@ Build the smallest system that can be:
 - explainable
 
 Avoid ambition until correctness is demonstrated.
+
+---
+
+## 11. Lessons Applied from Prior Work (StellarPop)
+
+This project explicitly incorporates lessons learned from prior LLM-assisted scientific software development.
+
+### 11.1 Role Separation
+
+- Architect (human/LLM design role) defines:
+  - architecture
+  - domain logic
+  - validation rules
+
+- Coding agent (Codex) implements only:
+  - code changes
+  - no domain decisions
+  - no architectural changes
+
+### 11.2 No Delegation of Scientific Validation
+
+- Correctness is determined only by:
+  - curated datasets
+  - experimental data
+  - peer-reviewed literature
+
+- Passing tests does NOT imply correctness
+
+### 11.3 Silent Error Risk
+
+- Outputs may be:
+  - numerically valid
+  - structurally correct
+  - but scientifically wrong
+
+- All outputs must be externally validated
+
+### 11.4 Non-Monotonic Progress
+
+- Fixing bugs may degrade results
+- Improvements must be evaluated against a fixed validation baseline
+- No assumption that “newer is better”
+
+### 11.5 Data Integrity First
+
+- Input data correctness is critical
+- Identity mismatches (IDs, numbering, mapping) will invalidate results
+- Data validation is part of the core system, not a preprocessing step
+
+### 11.6 Minimal Scope Enforcement
+
+- Over-expansion leads to loss of correctness
+- System must remain small and testable
+- No expansion before validation is working
+
+### 11.7 Persistent Artifacts
+
+- Results must be reproducible
+- Intermediate outputs should be inspectable
+- System state must survive session resets
+
+---
+

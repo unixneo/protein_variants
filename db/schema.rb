@@ -10,7 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_04_05_015452) do
+ActiveRecord::Schema[7.2].define(version: 2026_04_05_021240) do
+  create_table "protein_features", force: :cascade do |t|
+    t.integer "protein_id", null: false
+    t.string "feature_type", null: false
+    t.integer "start_pos", null: false
+    t.integer "end_pos", null: false
+    t.text "description"
+    t.string "source_db"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["protein_id", "feature_type"], name: "index_protein_features_on_protein_id_and_feature_type"
+    t.index ["protein_id", "source_db"], name: "index_protein_features_on_protein_id_and_source_db"
+    t.index ["protein_id"], name: "index_protein_features_on_protein_id"
+  end
+
   create_table "proteins", force: :cascade do |t|
     t.string "uniprot_accession", null: false
     t.string "gene_symbol"
@@ -21,6 +35,21 @@ ActiveRecord::Schema[7.2].define(version: 2026_04_05_015452) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["uniprot_accession"], name: "index_proteins_on_uniprot_accession", unique: true
+  end
+
+  create_table "structure_entries", force: :cascade do |t|
+    t.integer "protein_id", null: false
+    t.string "pdb_id", null: false
+    t.string "method", null: false
+    t.decimal "resolution"
+    t.string "chain_id"
+    t.integer "start_pos"
+    t.integer "end_pos"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["method"], name: "index_structure_entries_on_method"
+    t.index ["protein_id", "pdb_id"], name: "index_structure_entries_on_protein_id_and_pdb_id"
+    t.index ["protein_id"], name: "index_structure_entries_on_protein_id"
   end
 
   create_table "variants", force: :cascade do |t|
@@ -35,5 +64,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_04_05_015452) do
     t.index ["protein_id"], name: "index_variants_on_protein_id"
   end
 
+  add_foreign_key "protein_features", "proteins"
+  add_foreign_key "structure_entries", "proteins"
   add_foreign_key "variants", "proteins"
 end

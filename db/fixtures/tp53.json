@@ -1,0 +1,64 @@
+{
+  "protein": {
+    "uniprot_accession": "P04637",
+    "gene_symbol": "TP53",
+    "recommended_name": "Cellular tumor antigen p53",
+    "organism": "Homo sapiens",
+    "sequence": "MEEPQSDPSVEPPLSQETFSDLWKLLPEN",
+    "sequence_length": 30
+  },
+  "protein_features": [
+    {
+      "feature_type": "domain",
+      "start_pos": 95,
+      "end_pos": 289,
+      "description": "DNA-binding domain",
+      "source_db": "UniProt"
+    },
+    {
+      "feature_type": "region",
+      "start_pos": 1,
+      "end_pos": 93,
+      "description": "Transactivation region",
+      "source_db": "UniProt"
+    }
+  ],
+  "structure_entries": [
+    {
+      "pdb_id": "1TUP",
+      "method": "X-ray diffraction",
+      "resolution": 2.2,
+      "chain_id": "A",
+      "start_pos": 94,
+      "end_pos": 312
+    },
+    {
+      "pdb_id": "2OCJ",
+      "method": "X-ray diffraction",
+      "resolution": 1.68,
+      "chain_id": "B",
+      "start_pos": 94,
+      "end_pos": 292
+    }
+  ],
+  "variants": [
+    {
+      "hgvs_protein": "p.Arg175His",
+      "residue_position": 175,
+      "ref_aa": "R",
+      "alt_aa": "H"
+    },
+    {
+      "hgvs_protein": "p.Arg248Gln",
+      "residue_position": 248,
+      "ref_aa": "R",
+      "alt_aa": "Q"
+    },
+    {
+      "hgvs_protein": "p.Arg273His",
+      "residue_position": 273,
+      "ref_aa": "R",
+      "alt_aa": "H"
+    }
+  ]
+}
