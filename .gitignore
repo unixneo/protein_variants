@@ -29,8 +29,10 @@
 !/tmp/storage/
 !/tmp/storage/.keep
 
-# Track SQLite files in db/.
+# Track SQLite files in db/ but not WAL/SHM journal files.
 !/db/*.sqlite3
+/db/*.sqlite3-shm
+/db/*.sqlite3-wal
 
 /public/assets
 
