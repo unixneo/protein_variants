@@ -1,24 +1,31 @@
-# README
+# protein_variants
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+A minimal Rails application for deterministic interpretation of protein missense variants.
 
-Things you may want to cover:
+## Status
 
-* Ruby version
+Early-stage prototype.
 
-* System dependencies
+Current capabilities:
+- Protein and Variant domain models
+- SQLite3 database
+- RSpec test suite
 
-* Configuration
+## Design
 
-* Database creation
+See `DESIGN.md` for architecture and scope.
 
-* Database initialization
+## Requirements
 
-* How to run the test suite
+- Ruby (version from `.ruby-version`)
+- Rails (version from `Gemfile`)
+- SQLite3
 
-* Services (job queues, cache servers, search engines, etc.)
+## Setup
 
-* Deployment instructions
-
-* ...
+```bash
+git clone git@github.com:unixneo/protein_variants.git
+cd protein_variants
+bundle install
+bin/rails db:create db:migrate
+bundle exec rspec
