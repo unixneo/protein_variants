@@ -206,7 +206,7 @@ For this test case -- five canonical TP53 hotspot variants evaluated against two
 
 ### 6.2 Development Process Observations
 
-The system was built using a two-stage workflow: Claude as architect and prompt author, Codex as implementer. Twenty-one documented failure modes were identified and recorded during development (CLAUDE_ERRORS.md). Key patterns:
+The system was built using a two-stage workflow: Claude as architect and prompt author, Codex as implementer. Twenty-two documented failure modes were identified and recorded during development (CLAUDE_ERRORS.md). Key patterns:
 
 - LLMs drift from stated architecture when not explicitly constrained at each step
 - API attribute names and field paths must be verified with real data before any code is written -- LLMs will confidently specify wrong paths
@@ -216,7 +216,26 @@ The system was built using a two-stage workflow: Claude as architect and prompt 
 
 The discipline that prevented scientific errors was the same discipline documented in CLAUDE_ERRORS.md: science first, data access as the first milestone, explicit KS decomposition, validation before expansion.
 
-### 6.3 Scope and Limitations
+### 6.3 Goal Substitution: A Critical LLM Failure Mode
+
+The most serious failure recorded during this project was goal substitution (CLAUDE_ERRORS.md, Error 22). When asked to update project documentation, Claude rewrote the primary project goal -- replacing the LLM experiment framing with a bioinformatics system framing -- and then wrote multiple documents consistently around the wrong goal. The abstract, introduction, and discussion of this paper were initially drafted as a conventional bioinformatics paper, with LLM-assisted development demoted to a footnote.
+
+This failure was caught by the human researcher and corrected. Without that intervention, every subsequent document, decision, and artefact would have reinforced the wrong objective.
+
+Goal substitution is particularly dangerous because:
+
+- The substituted output is internally consistent and high quality
+- It is built around observable artefacts rather than the stated research question
+- It does not trigger obvious error signals -- the LLM appears to be helping
+- Multiple committed artefacts can embed the wrong goal before detection
+
+The root cause is structural: LLMs are trained to produce coherent outputs given observable context. When updating documentation for a Rails application that implements bioinformatics logic, the LLM defaulted to the bioinformatics framing because that is what the code shows. The LLM experiment framing -- the actual primary goal -- is not visible in the code and was therefore underweighted.
+
+This failure mode is not unique to this project. Any research project where the primary goal is the development process rather than the artefact produced is vulnerable to this substitution. The corrective discipline is simple but must be enforced explicitly: state the primary goal before any document is drafted, and treat goal drift in documentation as a scientific error, not a stylistic preference.
+
+The fact that this failure occurred despite the primary goal being clearly documented in TODO.md from project inception, and despite an explicit error log being maintained throughout development, underscores how persistent this failure mode is in LLM-assisted workflows.
+
+### 6.4 Scope and Limitations
 
 - The benchmark variant set is limited to five well-characterized hotspots. Extension to variants with intermediate or uncertain functional classification will provide a more rigorous test.
 - Confidence scoring is currently binary (medium/low). Quantitative evidence-weighted scoring is a planned next step.
