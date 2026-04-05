@@ -85,13 +85,13 @@ All five variants fall within the DNA-binding domain (residues 95-289, UniProt a
 
 ## 4. External Evidence
 
-### 4.1 MaveDB Functional Scores (Giacomelli et al. 2018)
+### 4.1 MaveDB Functional Scores
 
-Score set: urn:mavedb:00000068-0-1
+Two score sets from MaveDB are integrated:
 
-Higher scores indicate greater loss of function in this dataset.
+**Giacomelli et al. 2018** (urn:mavedb:00000068-0-1) — nutlin-3 paired with etoposide screen:
 
-| Variant | MaveDB Score |
+| Variant | Score |
 |---|---|
 | p.Arg175His | 1.025 |
 | p.Gly245Ser | 0.772 |
@@ -99,7 +99,17 @@ Higher scores indicate greater loss of function in this dataset.
 | p.Arg273His | 1.221 |
 | p.Tyr220Cys | 1.102 |
 
-All five variants show scores above 0.7, consistent with significant functional impairment.
+**Kotler et al. 2018** (urn:mavedb:00000068-a-1) — nutlin-3 paired with wildtype screen:
+
+| Variant | Score |
+|---|---|
+| p.Arg175His | 1.791 |
+| p.Gly245Ser | 1.146 |
+| p.Arg248Gln | 1.233 |
+| p.Arg273His | 1.146 |
+| p.Tyr220Cys | 1.526 |
+
+All ten scores are above 0.7, consistent with significant functional impairment across both experimental conditions.
 
 ### 4.2 ClinVar Clinical Classifications
 

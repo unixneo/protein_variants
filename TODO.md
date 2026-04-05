@@ -48,9 +48,8 @@
 
 ## Data Ingestion Scripts (Standalone Ruby, not rake)
 - 🟢 script/fetch_pdb_structures.rb — RCSB Data API + Sequence Coordinates API
-- 🟢 script/fetch_mavedb_scores.rb — MaveDB CSV API (Giacomelli 2018)
+- 🟢 script/fetch_mavedb_scores.rb — MaveDB CSV API (Giacomelli2018 + Kotler2018, 10 scores)
 - 🟢 script/fetch_clinvar_classifications.rb — NCBI eutils esearch + esummary
-- 🟡 script/fetch_kotler2018_scores.rb — MaveDB Kotler 2018 score set (second benchmark)
 
 ## Variant Interpretation
 - 🟢 VariantInterpretationService: deterministic rules, all four branch outcomes
@@ -71,13 +70,12 @@
 
 ## Validation Plan (Critical — Phase 2)
 - 🟢 EvidenceValidatorService implemented: agree/disagree/no_data per variant
+- 🟢 Kotler2018 score set integrated (urn:mavedb:00000068-a-1)
 - 🟡 Wire EvidenceValidatorService into VariantsController and variant show page
 - 🟡 Run EvidenceValidatorService against all 5 benchmark variants and document results
-- 🟡 Add Kotler 2018 score set as second MaveDB comparator
 - 🟡 Document agreement/disagreement results in PAPER.md
 
 ## Next Steps (Immediate)
 - 🟡 Wire EvidenceValidatorService into VariantsController#show
 - 🟡 Add evidence agreement card to variant show page
-- 🟡 Fetch Kotler 2018 score set from MaveDB
 - 🟡 Run and document formal validation results in PAPER.md

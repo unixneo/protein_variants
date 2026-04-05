@@ -186,17 +186,20 @@ The order of scientific weight should be:
 
 ## 5. Current Initial Benchmark Variant Set
 
-All five TP53 missense variants are confirmed present in MaveDB and ClinVar:
+All five TP53 missense variants confirmed present in both MaveDB score sets and ClinVar:
 
-| Variant | Position | MaveDB Score (Giacomelli) | ClinVar | Review Status |
-|---|---|---|---|---|
-| p.Arg175His | 175 | 1.025 | Pathogenic | Expert panel |
-| p.Gly245Ser | 245 | 0.772 | Pathogenic | No assertion criteria |
-| p.Arg248Gln | 248 | 0.812 | Pathogenic | No assertion criteria |
-| p.Arg273His | 273 | 1.221 | Pathogenic | Expert panel |
-| p.Tyr220Cys | 220 | 1.102 | Likely pathogenic | Expert panel |
+| Variant | Position | Giacomelli2018 | Kotler2018 | ClinVar | Review Status |
+|---|---|---|---|---|---|
+| p.Arg175His | 175 | 1.025 | 1.791 | Pathogenic | Expert panel |
+| p.Gly245Ser | 245 | 0.772 | 1.146 | Pathogenic | No assertion criteria |
+| p.Arg248Gln | 248 | 0.812 | 1.233 | Pathogenic | No assertion criteria |
+| p.Arg273His | 273 | 1.221 | 1.146 | Pathogenic | Expert panel |
+| p.Tyr220Cys | 220 | 1.102 | 1.526 | Likely pathogenic | Expert panel |
 
-MaveDB score set: urn:mavedb:00000068-0-1 (Giacomelli 2018)
+MaveDB score sets:
+- Giacomelli2018: urn:mavedb:00000068-0-1
+- Kotler2018: urn:mavedb:00000068-a-1
+
 ClinVar variation IDs: 12374 (R175H), 12385 (G245S), 12386 (R248Q), 12392 (R273H), 12375 (Y220C)
 
 ---
