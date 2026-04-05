@@ -37,3 +37,9 @@ This project treats the primary SQLite database as the canonical application-sta
 External or large reference datasets are intended to be stored in separate SQLite database files rather than merged into one monolithic database. This preserves provenance, keeps the main app database small, and supports reproducible scientific workflows.
 
 Current local import utilities are development/bootstrap tools, not the long-term canonical data model
+
+## Environment
+
+This project is development-only.
+
+It is not currently designed around separate production infrastructure. The primary application database and sidecar source databases are treated as development-time scientific artifacts.

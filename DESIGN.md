@@ -270,3 +270,17 @@ This avoids:
 
 SQLite files are not just storage backends in this project.
 They are persistent, versioned scientific artifacts.
+
+## 13. Environment Model
+
+This project is designed as a development-only scientific application.
+
+It does not target a separate production deployment architecture, and it does not treat production-style environment separation as a design goal.
+
+The system is built around:
+
+- a primary development SQLite database
+- multiple development sidecar SQLite databases
+- direct, explicit querying of those databases
+
+The focus is reproducible scientific development, inspection, and validation, not multi-environment deployment.
