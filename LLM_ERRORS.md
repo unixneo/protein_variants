@@ -220,6 +220,134 @@ Explained solutions instead of providing direct Codex prompts when explicitly as
 
 ---
 
+---
+
+## 11. Skipping API Validation Before Building
+
+**Error**  
+Proceeded to design and build parts of the system before verifying that external APIs were accessible and returned usable data.
+
+**What happened**  
+- Assumed UniProt, PDB, MaveDB, and ClinVar endpoints would work as expected
+- Built ingestion and lookup logic before confirming endpoints
+- Initial API endpoints for PDB and MaveDB were incorrect
+- Required a later corrective step to test and fix endpoints
+
+**Why it was wrong**  
+- Violates basic engineering order:
+  - data availability must be proven before system design
+- Introduced rework and loss of trust
+- Created unnecessary complexity before confirming feasibility
+
+**Correct rule going forward**  
+> No system design or ingestion code should be written until APIs are validated with real data pulls.
+
+---
+
+## 12. Building Infrastructure Before Scientific Specification
+
+**Error**  
+Allowed system architecture and Rails infrastructure to be built before locking the scientific workflow and data requirements.
+
+**What happened**  
+- Built multi-database structure, models, UI, and diagnostics
+- Did not clearly define:
+  - exact input variants
+  - exact data fields required
+  - exact calculations
+  - exact validation method
+- Resulted in confusion about project purpose
+
+**Why it was wrong**  
+- Reversed the correct order:
+  - science → data → calculations → system
+- Produced a technically sound system with unclear objective
+
+**Correct rule going forward**  
+> Scientific objective and data requirements must be explicitly defined before building system components.
+
+---
+
+## 13. Failure to Enforce Step-by-Step Execution Discipline
+
+**Error**  
+Did not maintain a strict, linear workflow aligned with the user’s instructions.
+
+**What happened**  
+- Jumped ahead to future steps (KS design, scoring, UI)
+- Introduced abstractions before validating basic steps
+- Did not constrain responses to the immediate task
+
+**Why it was wrong**  
+- Broke the user’s required working style:
+  - step-by-step
+  - verify each step before proceeding
+- Caused frustration and loss of confidence
+
+**Correct rule going forward**  
+> Only execute the current step. Do not introduce future steps, abstractions, or expansions unless explicitly requested.
+
+---
+
+## 14. Over-Specifying Solutions Without Verified Inputs
+
+**Error**  
+Proposed scoring systems, KS modules, and interpretation logic before confirming available data fields and API responses.
+
+**What happened**  
+- Suggested deterministic scoring (+2 domain, +2 structure) before confirming data availability
+- Proposed Knowledge Source decomposition without grounded data mapping
+- Created the appearance of progress without real inputs
+
+**Why it was wrong**  
+- Logic without validated inputs is meaningless
+- Violates data-first engineering principles
+- Creates false confidence in system readiness
+
+**Correct rule going forward**  
+> All computation logic must be derived directly from verified data fields and real API responses.
+
+---
+
+## 15. Underestimating the Importance of Data Access in a Data-Driven System
+
+**Error**  
+Treated data access as a secondary concern rather than the primary dependency.
+
+**What happened**  
+- Focused on Rails structure and architecture
+- Delayed verification of actual data sources
+- Required explicit user intervention to correct course
+
+**Why it was wrong**  
+- This project is fundamentally data-driven
+- Without data, the system has no meaning
+- Data access should have been the first milestone
+
+**Correct rule going forward**  
+> In data-driven systems, data access is the first milestone, not an implementation detail.
+
+---
+
+## Addendum: Reality Check on LLM Capability
+
+**Observation**  
+LLMs perform well in:
+
+- code generation
+- scaffolding
+- small bounded tasks
+
+LLMs perform poorly in:
+
+- long-term constraint tracking
+- step ordering discipline
+- resisting speculative expansion
+- maintaining alignment over iterative sessions
+
+**Operational implication**  
+> LLMs must be treated as constrained assistants, not autonomous engineers.
+
 ## Summary
 
 These errors are consistent with known LLM failure modes:
