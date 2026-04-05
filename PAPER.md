@@ -250,8 +250,8 @@ This finding has direct implications for the economics of LLM-assisted scientifi
 ### 6.5 Scope and Limitations
 
 - The benchmark variant set is limited to five well-characterized hotspots. Extension to variants with intermediate or uncertain functional classification will provide a more rigorous test.
-- Confidence scoring is currently binary (medium/low). Quantitative evidence-weighted scoring is a planned next step.
-- ClinVar review status varies across variants (expert panel vs. no assertion criteria), which is not yet used to weight agreement confidence.
+- Confidence scoring uses a point-based model (structural axis 0–60, evidence axis 0–40, combined threshold :high/:moderate/:low). The thresholds are principled but not empirically calibrated against a held-out validation set.
+- ClinVar review status is used to weight confidence (expert panel +15 vs. pathogenic-without-panel +5), but is not yet used to stratify agreement conclusions.
 - The system uses a small curated set of protein features and structures. Expansion to the full UniProt annotation set and all available PDB structures is planned.
 
 ---
@@ -280,9 +280,9 @@ ruby script/fetch_clinvar_classifications.rb
 
 ## Appendix B: Remaining Work
 
-- Quantitative evidence-weighted confidence scoring (low/medium/high)
+- Extend benchmark set to variants with uncertain or intermediate functional classification
+- Empirical calibration of confidence score thresholds against a held-out validation set
 - Expanded protein feature coverage from full UniProt annotation set
-- Extension to variants with uncertain or intermediate functional classification
 - Formal submission as a short methods paper or research note
 
 ## Appendix C: Future Extensions

@@ -24,11 +24,9 @@ Current calculations:
 - Domain-hit detection from curated protein feature intervals (DomainMapper KS)
 - Structure-hit detection from curated PDB structure intervals (StructureMapper KS)
 - Preliminary deterministic classification from rule combinations (Interpretation KS)
-- External evidence lookup: MaveDB functional scores, ClinVar clinical classifications
-
-Planned:
-- Expanded rule-based scoring (low/moderate/high)
-- EvidenceValidator KS: formal agreement measurement against Kotler 2018, Giacomelli 2018
+- Quantitative confidence scoring: structural axis (0–60) + evidence axis (0–40) → :high/:moderate/:low
+- External evidence lookup: MaveDB functional scores (Giacomelli 2018, Kotler 2018), ClinVar classifications
+- EvidenceValidator KS: formal agreement measurement, 100% agreement rate across all 5 benchmark variants
 
 ## Blackboard / Knowledge Source Architecture
 
@@ -36,8 +34,8 @@ This project follows a blackboard-style orchestration model with separate knowle
 
 - DomainMapper KS: maps variant residue position against curated protein feature intervals.
 - StructureMapper KS: maps variant residue position against curated PDB structure intervals.
-- Interpretation KS: combines deterministic rule outputs into preliminary mechanism and confidence.
-- EvidenceValidator KS (in progress): compares interpretation against MaveDB and ClinVar.
+- Interpretation KS: combines deterministic rule outputs into preliminary mechanism and quantitative confidence score (structural axis, 0–60).
+- EvidenceValidator KS: compares interpretation against MaveDB and ClinVar; computes evidence confidence score (0–40) and combined confidence level (:high/:moderate/:low).
 
 SQLite databases as scientific artifacts:
 - `db/development.sqlite3` — main app: proteins, variants, features, structure entries
@@ -60,27 +58,27 @@ All five benchmark variants are loaded with full external evidence:
 
 ## Status
 
-Active development. Phase 1 complete. Phase 2 (evidence integration) in progress.
+Phase 1 and Phase 2 complete. Phase 3 (scoring) complete.
 
 Current capabilities:
 - Multi-SQLite architecture: 5 separate scientific data sources
 - TP53 (P04637): full 393-residue canonical sequence
-- 5 benchmark variants with domain/structure context
-- `VariantInterpretationService`: deterministic rule engine, all four branch outcomes
-- `EvidenceValidatorService`: agree/disagree/no_data against MaveDB and ClinVar
+- 5 benchmark variants with domain/structure context and full external evidence
+- `VariantInterpretationService`: deterministic rule engine, quantitative structural confidence scoring (0–60)
+- `EvidenceValidatorService`: agree/disagree/no_data vs MaveDB (Giacomelli 2018, Kotler 2018) and ClinVar; evidence confidence scoring (0–40); combined confidence level (:high/:moderate/:low)
+- 100% agreement rate across all 5 benchmark variants and all 3 evidence sources
 - `Protein#uniprot_entry`: cross-database lookup into UniProt DB
 - `Protein#pdb_structures`: cross-database lookup into PDB DB (with residue coverage)
 - `Variant#mavedb_score`: cross-database lookup into MaveDB DB
 - `Variant#clinvar_classification`: cross-database lookup into ClinVar DB
 - `Mavedb::Score` and `Clinvar::Classification` models with populated data
 - Standalone fetch scripts for RCSB, MaveDB, and ClinVar APIs
-- Dark card-based inspection UI: home, proteins index/show, variant show with full evidence cards
-- 46 RSpec examples, 0 failures
+- Dark card-based inspection UI: home, proteins index/show, variant show with full evidence and confidence cards
+- 67 RSpec examples, 0 failures
 
 Next:
-- Wire EvidenceValidatorService into variant show page
-- Fetch Kotler 2018 score set from MaveDB as second comparator
-- Document formal validation results in PAPER.md
+- Extend benchmark set to variants with intermediate or uncertain functional classification
+- Consider formal submission of PAPER.md as a short methods/research note
 
 ## Design
 

@@ -135,13 +135,20 @@ This system does NOT aim to:
 - UI: inspection interface for proteins and variants
 - 44 RSpec examples, 0 failures
 
-### Phase 2 — In Progress
+### Phase 2 — Complete
 - MaveDB and ClinVar databases scaffolded and populated
-- 5 benchmark variants with Giacomelli 2018 scores and ClinVar classifications
-- Variant lookup methods for MaveDB and ClinVar (next)
-- EvidenceValidator KS: formal agreement measurement (next)
-- Kotler 2018 score set integration (planned)
-- Formal validation results documented in PAPER.md (planned)
+- 5 benchmark variants with Giacomelli 2018 + Kotler 2018 scores and ClinVar classifications
+- EvidenceValidatorService: formal agreement measurement (agree/disagree/no_data)
+- 100% agreement rate across all 5 benchmark variants and all 3 evidence sources
+- Formal validation results documented in PAPER.md
+
+### Phase 3 — Complete
+- Quantitative confidence scoring: structural axis (0–60), evidence axis (0–40)
+- Combined confidence level: :high/:moderate/:low with explicit thresholds
+- Confidence and score fields surfaced in UI variant show card
+- Specs for Mavedb::Score and Clinvar::Classification models
+- Scoring specs: 12 new examples covering all scoring methods
+- Suite: 67 examples, 0 failures, 2 pending (development-only path specs)
 
 ---
 
