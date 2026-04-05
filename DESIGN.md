@@ -226,3 +226,47 @@ This project explicitly incorporates lessons learned from prior LLM-assisted sci
 
 ---
 
+## 12. Database Artifact Strategy
+
+This project does not treat Rails seed files or local fixture files as permanent canonical data sources.
+
+### 12.1 Main Application Database
+
+- The primary SQLite database file is the canonical application-state artifact.
+- It may be committed to GitHub for reproducibility and persistence.
+- Curated working data for the application lives here.
+
+### 12.2 No Permanent Seed-File Dependency
+
+- Seed files and JSON fixture files may be used temporarily during development,
+  but they are not the preferred long-term mechanism for maintaining project state.
+- The database file itself is the durable state.
+
+### 12.3 External Data as Separate SQLite Databases
+
+- Large or externally sourced datasets should be stored in separate SQLite database files.
+- These external databases should not be merged blindly into the primary application database.
+- Each external SQLite file should preserve provenance and represent a distinct knowledge source.
+
+Examples:
+- uniprot.sqlite3
+- pdb.sqlite3
+- clinvar.sqlite3
+- mavedb.sqlite3
+
+### 12.4 Architectural Consequence
+
+The system should prefer:
+- a small primary application database
+- multiple sidecar SQLite databases for external sources
+- explicit import, mapping, or query logic between them
+
+This avoids:
+- one large monolithic database
+- provenance confusion
+- unnecessary duplication of raw external data inside the main app database
+
+### 12.5 Guiding Principle
+
+SQLite files are not just storage backends in this project.
+They are persistent, versioned scientific artifacts.
