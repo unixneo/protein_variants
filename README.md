@@ -63,17 +63,20 @@ Current capabilities:
 - TP53 (P04637): full 393-residue canonical sequence
 - 5 benchmark variants with domain/structure context
 - `VariantInterpretationService`: deterministic rule engine, all four branch outcomes
+- `EvidenceValidatorService`: agree/disagree/no_data against MaveDB and ClinVar
 - `Protein#uniprot_entry`: cross-database lookup into UniProt DB
 - `Protein#pdb_structures`: cross-database lookup into PDB DB (with residue coverage)
+- `Variant#mavedb_score`: cross-database lookup into MaveDB DB
+- `Variant#clinvar_classification`: cross-database lookup into ClinVar DB
 - `Mavedb::Score` and `Clinvar::Classification` models with populated data
 - Standalone fetch scripts for RCSB, MaveDB, and ClinVar APIs
-- Dark card-based inspection UI: home, proteins index/show, variant show
-- 44 RSpec examples, 0 failures
+- Dark card-based inspection UI: home, proteins index/show, variant show with full evidence cards
+- 46 RSpec examples, 0 failures
 
 Next:
-- Add `Variant#mavedb_score` and `Variant#clinvar_classification` lookup methods
-- Expose evidence data on variant show page
-- Implement EvidenceValidator KS: formal agreement measurement
+- Wire EvidenceValidatorService into variant show page
+- Fetch Kotler 2018 score set from MaveDB as second comparator
+- Document formal validation results in PAPER.md
 
 ## Design
 

@@ -137,9 +137,14 @@ This is consistent with their known biology: all five are hotspot variants in th
 
 ### 5.2 Agreement with External Evidence
 
-Agreement assessment is in progress (EvidenceValidator KS not yet implemented).
+The EvidenceValidatorService (EvidenceValidator KS) is implemented and compares system output against MaveDB and ClinVar per variant. Agreement logic:
 
-Preliminary observation: the system's mechanism classification ("structured functional region") is consistent with the MaveDB scores (all > 0.7, indicating functional impairment) and ClinVar classifications (Pathogenic or Likely pathogenic for all five). Formal agreement metrics will be reported when the EvidenceValidator KS is complete.
+- MaveDB: system is considered consistent if a domain or structure hit is detected and the MaveDB score >= 0.5 (functionally impaired threshold)
+- ClinVar: system is considered consistent if a domain or structure hit is detected and ClinVar classification is Pathogenic or Likely pathogenic
+
+All five benchmark variants produce domain hits (DNA-binding domain, residues 95-289) and structure hits (covered by 1TUP, 2OCJ, 3KZ8, 2AC0). All five have MaveDB scores >= 0.7 and ClinVar classifications of Pathogenic or Likely pathogenic.
+
+Formal per-variant agreement results pending wiring of EvidenceValidatorService into the variant show page and controller. Expected result: agree across all five variants for both MaveDB and ClinVar comparators.
 
 ---
 

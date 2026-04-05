@@ -23,7 +23,7 @@
 - 🟢 KS: DomainMapper — residue-position mapping to ProteinFeature intervals
 - 🟢 KS: StructureMapper — residue-position mapping to StructureEntry intervals
 - 🟢 KS: Interpretation — deterministic rule engine (VariantInterpretationService)
-- 🟡 KS: EvidenceValidator — compare interpretation against MaveDB and ClinVar
+- 🟢 KS: EvidenceValidator — EvidenceValidatorService implemented, compares system output to MaveDB and ClinVar
 
 ## Core Architecture
 - 🟢 Multi-SQLite architecture with model-layer database selection
@@ -43,8 +43,8 @@
 ## Cross-Database Lookups
 - 🟢 Protein#uniprot_entry — lookup into Uniprot::Entry by accession
 - 🟢 Protein#pdb_structures — lookup into Pdb::Structure by uniprot_accession
-- 🟡 Variant#mavedb_score — lookup into Mavedb::Score by hgvs_protein
-- 🟡 Variant#clinvar_classification — lookup into Clinvar::Classification by hgvs_protein
+- 🟢 Variant#mavedb_score — lookup into Mavedb::Score by hgvs_protein
+- 🟢 Variant#clinvar_classification — lookup into Clinvar::Classification by hgvs_protein
 
 ## Data Ingestion Scripts (Standalone Ruby, not rake)
 - 🟢 script/fetch_pdb_structures.rb — RCSB Data API + Sequence Coordinates API
@@ -60,24 +60,24 @@
 ## UI (Inspection Interface)
 - 🟢 Home page, proteins index/show, variant show — all implemented
 - 🟢 Protein show: UniProt entry and PDB structures cards displayed
-- 🟡 Variant show: MaveDB score and ClinVar classification cards
+- 🟢 Variant show: MaveDB score and ClinVar classification cards displayed
 - 🟡 Variant show: agreement/disagreement indicator between system output and evidence
 
 ## Testing
-- 🟢 44 examples, 0 failures, 2 pending (development-only DB path specs)
+- 🟢 46 examples, 0 failures, 2 pending (development-only DB path specs)
+- 🟢 Specs for Variant#mavedb_score and Variant#clinvar_classification lookups
+- 🟢 Specs for EvidenceValidatorService (agree, disagree, no_data cases)
 - 🟡 Add specs for Mavedb::Score and Clinvar::Classification models
-- 🟡 Add specs for Variant#mavedb_score and Variant#clinvar_classification lookups
 
 ## Validation Plan (Critical — Phase 2)
-- 🟡 Implement EvidenceValidator KS
-- 🟡 For each benchmark variant: compare system mechanism output to MaveDB score
-- 🟡 For each benchmark variant: compare system output to ClinVar classification
+- 🟢 EvidenceValidatorService implemented: agree/disagree/no_data per variant
+- 🟡 Wire EvidenceValidatorService into VariantsController and variant show page
+- 🟡 Run EvidenceValidatorService against all 5 benchmark variants and document results
 - 🟡 Add Kotler 2018 score set as second MaveDB comparator
 - 🟡 Document agreement/disagreement results in PAPER.md
 
 ## Next Steps (Immediate)
-- 🟡 Add Variant#mavedb_score and Variant#clinvar_classification lookup methods
-- 🟡 Expose MaveDB and ClinVar data on variant show page
-- 🟡 Implement EvidenceValidator KS as a new service class
+- 🟡 Wire EvidenceValidatorService into VariantsController#show
+- 🟡 Add evidence agreement card to variant show page
 - 🟡 Fetch Kotler 2018 score set from MaveDB
-- 🟡 Run and document formal validation results
+- 🟡 Run and document formal validation results in PAPER.md
