@@ -249,23 +249,38 @@ Saw an unexpected file `CHATGPT_ERRORS.md` during a git status review and immedi
 
 ---
 
-## 22. Rewriting the Primary Project Goal
+## 22. Goal Substitution: Rewrote the Primary Project Objective
+
+**Severity: Critical**
 
 **Error**
-When updating README.md and PAPER.md, rewrote the primary project framing to focus on the TP53 science, burying the actual primary goal: testing whether an LLM-built system can produce scientifically valid results compared to peer-reviewed data.
+When asked to update documentation, Claude substituted the primary project goal with a different goal of its own construction, then wrote multiple documents -- README, PAPER.md abstract, PAPER.md introduction, PAPER.md discussion -- consistently around the wrong goal. The user had to intervene to correct this.
 
 **What happened**
-- README Project Goal section was rewritten to emphasize building an inspectable variant interpretation system
-- PAPER.md abstract and introduction were written as a bioinformatics paper rather than an LLM experiment paper
-- The LLM-assisted development process was demoted to a footnote in section 6.3
+- The stated primary goal of this project, explicit since project inception and documented in TODO.md, is:
+  **Can an LLM-built deterministic system produce scientifically valid results when compared to peer-reviewed data?**
+  The LLM experiment is the primary goal. TP53 missense interpretation is the test vehicle.
+- When asked to update README.md and draft PAPER.md, Claude rewrote the goal as:
+  "Build an inspectable, engineering-focused system for deterministic interpretation of missense variants"
+- Claude then wrote the entire PAPER.md as a bioinformatics paper, framing LLM-assisted development as a footnote in section 6.3
+- Multiple documents were drafted and committed around the wrong goal before the user caught the error
+- Claude had to undo the framing across README.md, PAPER.md abstract, introduction, and discussion sections
 
-**Why it was wrong**
-- The primary research question is about LLM-assisted scientific software development
-- TP53 missense interpretation is the test vehicle, not the goal
-- This drift is exactly the kind of objective substitution LLMs are known to exhibit
+**Why this is a critical failure**
+This is not a minor wording issue. Goal substitution is one of the most dangerous LLM failure modes:
+- The LLM appears to be helping and producing high-quality output
+- The output is internally consistent and well-written
+- But it is built around the wrong objective
+- Left uncorrected, every subsequent document, decision, and artefact would reinforce the wrong framing
+- The user cannot rely on Claude to maintain goal fidelity across a long session without explicit checkpoints
+
+This failure is structurally identical to Error 9 (Infrastructure Leading the Science) but at a higher level: instead of infrastructure getting ahead of science, the entire project goal was replaced. It also directly contradicts Error 7 (Failure to Clearly State Scientific Objective) -- Claude documented the wrong objective clearly and consistently.
+
+**Root cause**
+LLMs are trained to produce coherent, well-structured outputs. When updating documentation, Claude defaulted to what sounded like a compelling project framing for the observable artefacts (a Rails bioinformatics app), rather than interrogating what the actual stated research question was. The LLM experiment framing is less visible in the code than the bioinformatics system, so Claude underweighted it.
 
 **Correct rule going forward**
-> The primary goal of this project is the LLM experiment. The science is the test vehicle. Never reframe the project as primarily a bioinformatics system.
+> Before writing or updating any document -- README, paper, design doc, or any narrative artefact -- explicitly state the primary project goal as the first line of context. For this project: the primary goal is the LLM experiment. TP53 is the test vehicle. If any document draft omits or subordinates this framing, it is wrong and must be corrected before committing.
 
 ---
 
