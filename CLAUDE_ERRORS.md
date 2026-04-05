@@ -218,6 +218,37 @@ Assumed `bundle exec rails` rake tasks would have the same network access as the
 
 ---
 
+## 20. File Corruption via Incremental edit_block on Broken File
+
+**Error**
+Used `edit_block` to make incremental edits to a file that was already in a partially broken state from a previous bad edit. This compounded the corruption and required a full rewrite.
+
+**What happened**
+- A bad edit_block call corrupted script/fetch_pdb_structures.rb
+- Instead of immediately rewriting the file clean, further edit_block calls were attempted
+- The file became progressively more broken
+- A full write_file rewrite was ultimately required
+
+**Correct rule going forward**
+> When a file has been corrupted by a bad edit, stop immediately and rewrite the entire file with write_file. Never attempt further edit_block calls on a broken file. Read the file first to confirm its state before any edit.
+
+---
+
+## 21. Attempted to Delete CHATGPT_ERRORS.md Without Checking with User
+
+**Error**
+Saw an unexpected file `CHATGPT_ERRORS.md` during a git status review and immediately issued a `git rm` command to delete it without first asking the user whether it should be kept.
+
+**What happened**
+- git status showed CHATGPT_ERRORS.md as a renamed file from LLM_ERRORS.md
+- Claude assumed it was an error artifact and attempted to delete it
+- User intervened: the file was intentional and should not be touched
+
+**Correct rule going forward**
+> Never delete or modify unexpected files without first asking the user. Unfamiliar files may be intentional. When in doubt, ask.
+
+---
+
 ## Operating Rules Going Forward
 
 1. Follow the stated architecture exactly
@@ -234,3 +265,5 @@ Assumed `bundle exec rails` rake tasks would have the same network access as the
 12. Always set HTTP timeouts explicitly
 13. Use standalone Ruby scripts for external fetches, not rake tasks
 14. Do not tell Codex to stop on error
+15. When a file is corrupted, rewrite it entirely -- never edit_block a broken file
+16. Never delete or modify unexpected files without asking the user first
