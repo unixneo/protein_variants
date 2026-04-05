@@ -1,6 +1,49 @@
 # protein_variants
 
-A minimal Rails application for deterministic interpretation of protein missense variants.
+A Rails application for deterministic interpretation of protein missense variants.
+
+## Project Goal
+
+Build an inspectable, engineering-focused system for deterministic interpretation of missense variants, starting with TP53.
+
+## Scientific Objective
+
+Initial target: TP53.
+
+Core scientific question:
+Given a missense variant, what is its likely structural/functional impact based on curated sequence, feature, and structure context?
+
+## What the System Calculates
+
+Current calculations:
+- Variant residue-position lookup
+- Domain-hit detection from curated feature intervals
+- Structure-hit detection from curated structure intervals
+- Preliminary deterministic classification from rule combinations
+
+Planned calculations:
+- Protein → PDB lookup expansion
+- Evidence comparison against ClinVar / MaveDB
+- Expanded rule-based impact scoring
+
+## Blackboard / Knowledge Source Architecture
+
+This project follows a blackboard-style orchestration model with separate knowledge sources over multiple SQLite files.
+
+- DomainMapper KS: maps variant residue position against curated protein feature intervals.
+- StructureMapper KS: maps variant residue position against curated structure intervals.
+- Interpretation KS: combines deterministic rule outputs into preliminary mechanism and confidence.
+- EvidenceValidator KS (planned): compares current interpretation with external evidence sources.
+
+The system uses multiple SQLite database files as separate scientific data sources (`db/development.sqlite3`, `db/uniprot.sqlite3`, `db/pdb.sqlite3`).
+The app orchestrates across those sources without merging them into one large database.
+Current interpretation is deterministic and inspectable, not an AI prediction system.
+
+## Initial Validation Plan
+
+- Confirm model-to-database routing for main, Uniprot, and PDB sources.
+- Validate deterministic interpretation branch coverage with reproducible fixture-driven tests.
+- Validate cross-database lookup behavior and inspectability in request/service specs.
 
 ## Status
 
@@ -8,7 +51,7 @@ Early-stage prototype.
 
 Current capabilities:
 - Protein and Variant domain models
-- SQLite3 database
+- Multi-SQLite data source setup
 - RSpec test suite
 
 ## Design
@@ -29,6 +72,7 @@ cd protein_variants
 bundle install
 bin/rails db:create db:migrate
 bundle exec rspec
+```
 
 ## Data Strategy
 

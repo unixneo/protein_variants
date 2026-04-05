@@ -1,5 +1,15 @@
 # TODO
 
+## Scientific Objective and Blackboard KS Plan
+- 🟢 Scientific objective is defined as deterministic missense interpretation for TP53 with structural/functional context.
+- 🟢 Current system is deterministic and inspectable, not an AI prediction system.
+- 🟢 DomainMapper KS behavior is implemented through residue-position mapping to `ProteinFeature` intervals.
+- 🟢 StructureMapper KS behavior is implemented through residue-position mapping to `StructureEntry` intervals.
+- 🟢 Interpretation KS behavior is implemented through `VariantInterpretationService` deterministic rules.
+- 🟡 Add Protein → PDB lookup path as the next blackboard input channel.
+- 🟡 Add EvidenceValidator KS against ClinVar / MaveDB for evidence comparison workflows.
+- 🟡 Formalize identifier/position mapping strategies across main, Uniprot, PDB, and future evidence sources.
+
 ## Core Architecture
 - 🟢 Multi-SQLite architecture is in place with model-layer database selection.
 - 🟢 `ApplicationRecord` is the base class for main app models.
