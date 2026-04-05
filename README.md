@@ -22,9 +22,10 @@ Current calculations:
 - Preliminary deterministic classification from rule combinations
 
 Planned calculations:
-- Protein → PDB lookup expansion
+- Residue coverage population for PDB structures (start_pos/end_pos via RCSB Sequence Coordinates API)
+- External lookup results exposed in inspection UI
 - Evidence comparison against ClinVar / MaveDB
-- Expanded rule-based impact scoring
+- Expanded rule-based impact scoring (low/moderate/high)
 
 ## Blackboard / Knowledge Source Architecture
 
@@ -47,12 +48,19 @@ Current interpretation is deterministic and inspectable, not an AI prediction sy
 
 ## Status
 
-Early-stage prototype.
+Active development. Phase 1 infrastructure complete.
 
 Current capabilities:
 - Protein and Variant domain models
-- Multi-SQLite data source setup
-- RSpec test suite
+- Multi-SQLite architecture: `db/development.sqlite3`, `db/uniprot.sqlite3`, `db/pdb.sqlite3`
+- Schema isolation: migration bleed between databases fixed; external DBs use isolated migration paths
+- TP53 (P04637) fixture loaded: full 393-residue sequence, 5 benchmark variants, 2 protein features, 2 structure entries
+- `VariantInterpretationService`: deterministic rule engine covering all four branch outcomes
+- `Protein#uniprot_entry`: cross-database lookup into `db/uniprot.sqlite3`
+- `Protein#pdb_structures`: cross-database lookup into `db/pdb.sqlite3`
+- 5 curated PDB structures for P04637 loaded into `db/pdb.sqlite3` via `script/fetch_pdb_structures.rb`
+- Dark card-based inspection UI: home, proteins index/show, variant show
+- RSpec suite: model, service, request, and view specs
 
 ## Design
 

@@ -8,4 +8,8 @@ class Protein < ApplicationRecord
   def uniprot_entry
     Uniprot::Entry.find_by(accession: uniprot_accession)
   end
+
+  def pdb_structures
+    Pdb::Structure.where(uniprot_accession: uniprot_accession).order(:start_pos)
+  end
 end

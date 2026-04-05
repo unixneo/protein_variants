@@ -16,9 +16,11 @@ development:
   uniprot:
     <<: *default
     database: db/uniprot.sqlite3
+    migrations_paths: db/migrate_uniprot
   pdb:
     <<: *default
     database: db/pdb.sqlite3
+    migrations_paths: db/migrate_pdb
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
@@ -30,9 +32,11 @@ test:
   uniprot:
     <<: *default
     database: storage/test_uniprot.sqlite3
+    migrations_paths: db/migrate_uniprot
   pdb:
     <<: *default
     database: storage/test_pdb.sqlite3
+    migrations_paths: db/migrate_pdb
 
 
 # SQLite3 write its data on the local filesystem, as such it requires

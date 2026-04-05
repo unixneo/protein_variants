@@ -92,13 +92,16 @@
 
 ## Cross-Database Lookups
 - 🟢 `Protein#uniprot_entry` performs `Uniprot::Entry.find_by(accession: protein.uniprot_accession)`.
-- 🟡 Add `Protein` → `Pdb::Structure` lookup path.
+- 🟢 `Protein#pdb_structures` performs `Pdb::Structure.where(uniprot_accession: protein.uniprot_accession)`.
 - 🟡 Define explicit mapping strategies between data sources (accession, identifiers, positional mappings).
 
 ## Data Ingestion / Bootstrapping
 - 🟢 `Tp53FixtureImporter` imports local fixture data from `db/fixtures/tp53.json`.
 - 🟢 Import flow supports protein upsert, feature replacement, structure replacement, and variant upsert.
 - 🟢 Rake task `protein_variants:import_tp53_fixture` is available.
+- 🟢 TP53 fixture updated: full 393-residue canonical sequence, all 5 benchmark variants loaded.
+- 🟢 `script/fetch_pdb_structures.rb` fetches 5 curated PDB structures for P04637 from RCSB Data API into `db/pdb.sqlite3`.
+- 🟡 Populate `start_pos`/`end_pos` for PDB structures via RCSB Sequence Coordinates API.
 
 ## Variant Interpretation
 - 🟢 `VariantInterpretationService` implemented with deterministic rules.
@@ -133,8 +136,10 @@
 - 🟡 Add planned ClinVar and MaveDB SQLite sources for comparator data.
 
 ## Next Steps (Immediate)
-- 🟡 Implement `Protein` → `Pdb::Structure` lookup method following existing lookup style.
-- 🟡 Add UI display blocks for external lookup results on protein and/or variant pages.
+- 🟡 Populate start_pos/end_pos for Pdb::Structure records using RCSB Sequence Coordinates API.
+- 🟡 Expose external lookup results (Uniprot::Entry, Pdb::Structure) in protein show and variant show UI.
+- 🟡 Fix resolution field extraction in script/fetch_pdb_structures.rb (currently nil for all structures).
+- 🟡 Verify 2LZH method field (returned as X-RAY DIFFRACTION; expected NMR).
 - 🟡 Define and document concrete identifier/position mapping strategy across main, Uniprot, and PDB datasets.
-- 🟡 Prepare additional external source scaffolding for ClinVar and MaveDB with dedicated abstract base records.
+- 🟡 Prepare ClinVar and MaveDB SQLite scaffolding with dedicated abstract base records.
 - 🟡 Execute validation against Kotler 2018, Giacomelli 2018, MaveDB TP53 sets, and ClinVar as secondary comparator.

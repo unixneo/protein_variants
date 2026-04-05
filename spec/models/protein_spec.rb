@@ -58,4 +58,36 @@ RSpec.describe Protein, type: :model do
       expect(protein.uniprot_entry).to be_nil
     end
   end
+
+  describe '#pdb_structures' do
+    before do
+      connection = Pdb::Structure.connection
+      next if connection.table_exists?(:structures)
+
+      connection.create_table :structures do |t|
+        t.string :pdb_id
+        t.string :title
+        t.string :chain_id
+        t.integer :start_pos
+        t.integer :end_pos
+        t.float :resolution
+        t.string :method
+        t.string :uniprot_accession
+      end
+    end
+
+    it 'returns only matching pdb structures ordered by start_pos' do
+      Pdb::Structure.delete_all
+      protein = described_class.create!(uniprot_accession: 'P04637')
+
+      matching_late = Pdb::Structure.create!(pdb_id: '2OCJ', start_pos: 90, uniprot_accession: 'P04637')
+      matching_early = Pdb::Structure.create!(pdb_id: '1TUP', start_pos: 50, uniprot_accession: 'P04637')
+      non_matching = Pdb::Structure.create!(pdb_id: '9XYZ', start_pos: 10, uniprot_accession: 'Q99999')
+
+      result = protein.pdb_structures.to_a
+
+      expect(result).to eq([matching_early, matching_late])
+      expect(result).not_to include(non_matching)
+    end
+  end
 end

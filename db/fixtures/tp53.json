@@ -4,8 +4,8 @@
     "gene_symbol": "TP53",
     "recommended_name": "Cellular tumor antigen p53",
     "organism": "Homo sapiens",
-    "sequence": "MEEPQSDPSVEPPLSQETFSDLWKLLPEN",
-    "sequence_length": 30
+    "sequence": "MEEPQSDPSVEPPLSQETFSDLWKLLPENNVLSPLPSQAMDDLMLSPDDIEQWFTEDPGPDEAPRMPEAAPPVAPAPAAPTPAAPAPAPSWPLSSSVPSQKTYQGSYGFRLGFLHSGTAKSVTCTYSPALNKMFCQLAKTCPVQLWVDSTPPPGTRVRAMAIYKQSQHMTEVVRRCPHHERCSDSDGLAPPQHLIRVEGNLRVEYLDDRNTFRHSVVVPYEPPEVGSDCTTIHYNYMCNSSCMGGMNRRPILTIITLEDSSGNLLGRNSFEVRVCACPGRDRRTEEENLRKKGEPHHELPPGSTKRALPNNTSSSPQPKKKPLDGEYFTLQIRGRERFEMFRELNEALELKDAQAGKEPGGSRAHSSHLKSKKGQSTSRHKKLMFKTEGPDSD",
+    "sequence_length": 393
   },
   "protein_features": [
     {
@@ -49,6 +49,12 @@
       "alt_aa": "H"
     },
     {
+      "hgvs_protein": "p.Gly245Ser",
+      "residue_position": 245,
+      "ref_aa": "G",
+      "alt_aa": "S"
+    },
+    {
       "hgvs_protein": "p.Arg248Gln",
       "residue_position": 248,
       "ref_aa": "R",
@@ -59,6 +65,12 @@
       "residue_position": 273,
       "ref_aa": "R",
       "alt_aa": "H"
+    },
+    {
+      "hgvs_protein": "p.Tyr220Cys",
+      "residue_position": 220,
+      "ref_aa": "Y",
+      "alt_aa": "C"
     }
   ]
 }
