@@ -63,11 +63,11 @@ The LLM experiment is the primary goal. TP53 missense interpretation is the test
 - 🟢 Variant show: Evidence Agreement card (system mechanism, MaveDB agreement, ClinVar agreement, overall)
 
 ## Testing
-- 🟢 61 examples, 0 failures, 2 pending (development-only DB path specs)
+- 🟢 67 examples, 0 failures, 2 pending (development-only DB path specs)
 - 🟢 Specs for Variant#mavedb_score and Variant#clinvar_classification lookups
 - 🟢 Specs for EvidenceValidatorService (agree, disagree, no_data cases)
 - 🟢 Specs for quantitative confidence scoring (structural + evidence axes, combined_confidence_level)
-- 🟡 Add specs for Mavedb::Score and Clinvar::Classification models
+- 🟢 Specs for Mavedb::Score and Clinvar::Classification models
 
 ## Validation Results (Phase 2 Complete)
 - 🟢 EvidenceValidatorService wired into VariantsController#show
@@ -84,14 +84,14 @@ The LLM experiment is the primary goal. TP53 missense interpretation is the test
 ## Next Steps
 - 🟡 Start new conversation for any further work (context window hygiene)
 - 🟢 Expand scoring to explicit low/moderate/high classification
-- 🟡 Add specs for Mavedb::Score and Clinvar::Classification models
+- 🟢 Add specs for Mavedb::Score and Clinvar::Classification models
 - 🟡 Extend benchmark set to variants with intermediate or uncertain functional classification
 - 🟡 Consider formal submission of PAPER.md as a short methods/research note
 
 ## Next Steps (Start Fresh Session)
 - 🟡 Start new conversation for any further work (context window hygiene -- Error 23)
 - 🟢 Expand scoring to explicit low/moderate/high classification
-- 🟡 Add specs for Mavedb::Score and Clinvar::Classification models
+- 🟢 Add specs for Mavedb::Score and Clinvar::Classification models
 - 🟡 Extend benchmark set to variants with intermediate or uncertain functional classification
 - 🟡 Consider formal submission of PAPER.md as a short methods/research note
 
