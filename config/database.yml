@@ -16,6 +16,9 @@ development:
   uniprot:
     <<: *default
     database: db/uniprot.sqlite3
+  pdb:
+    <<: *default
+    database: db/pdb.sqlite3
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
@@ -27,6 +30,9 @@ test:
   uniprot:
     <<: *default
     database: storage/test_uniprot.sqlite3
+  pdb:
+    <<: *default
+    database: storage/test_pdb.sqlite3
 
 
 # SQLite3 write its data on the local filesystem, as such it requires
