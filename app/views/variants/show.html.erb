@@ -1,0 +1,92 @@
+<main class="inspection-container">
+  <header class="inspection-page-header">
+    <h1>Variant <%= @variant.hgvs_protein %></h1>
+    <p>
+      <%= link_to "Back to Protein", protein_path(@variant.protein), class: "inspection-link" %>
+    </p>
+  </header>
+
+  <section class="inspection-stack">
+    <%= render layout: "shared/card", locals: { title: "Variant Summary" } do %>
+      <dl class="inspection-kv">
+        <dt>Protein</dt>
+        <dd><%= @variant.protein.uniprot_accession %></dd>
+        <dt>HGVS</dt>
+        <dd><%= @variant.hgvs_protein %></dd>
+        <dt>Residue Position</dt>
+        <dd><%= @variant.residue_position %></dd>
+        <dt>Amino Acid Change</dt>
+        <dd><%= @variant.ref_aa %>→<%= @variant.alt_aa %></dd>
+      </dl>
+    <% end %>
+
+    <%= render layout: "shared/card", locals: { title: "Interpretation" } do %>
+      <dl class="inspection-kv">
+        <dt>Preliminary Mechanism</dt>
+        <dd><%= @interpretation[:preliminary_mechanism] %></dd>
+        <dt>Confidence</dt>
+        <dd><%= @interpretation[:confidence] %></dd>
+        <dt>Domain Hit</dt>
+        <dd><%= @interpretation[:domain_hit] %></dd>
+        <dt>Structure Hit</dt>
+        <dd><%= @interpretation[:structure_hit] %></dd>
+      </dl>
+    <% end %>
+
+    <%= render layout: "shared/card", locals: { title: "Matching Features" } do %>
+      <% if @interpretation[:matching_features].any? %>
+        <table class="inspection-table">
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Start</th>
+              <th>End</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @interpretation[:matching_features].each do |feature| %>
+              <tr>
+                <td><%= feature[:feature_type] %></td>
+                <td><%= feature[:start_pos] %></td>
+                <td><%= feature[:end_pos] %></td>
+                <td><%= feature[:description].presence || "-" %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      <% else %>
+        <p class="inspection-empty">No matching features.</p>
+      <% end %>
+    <% end %>
+
+    <%= render layout: "shared/card", locals: { title: "Matching Structures" } do %>
+      <% if @interpretation[:matching_structures].any? %>
+        <table class="inspection-table">
+          <thead>
+            <tr>
+              <th>PDB</th>
+              <th>Chain</th>
+              <th>Start</th>
+              <th>End</th>
+              <th>Method</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @interpretation[:matching_structures].each do |entry| %>
+              <tr>
+                <td><%= entry[:pdb_id] %></td>
+                <td><%= entry[:chain_id].presence || "-" %></td>
+                <td><%= entry[:start_pos] %></td>
+                <td><%= entry[:end_pos] %></td>
+                <td><%= entry[:method] %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      <% else %>
+        <p class="inspection-empty">No matching structures.</p>
+      <% end %>
+    <% end %>
+  </section>
+</main>

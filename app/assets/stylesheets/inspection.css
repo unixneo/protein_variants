@@ -1,0 +1,130 @@
+.inspection-body {
+  margin: 0;
+  background: #0b0e12;
+  color: #d5dae1;
+  font-family: "Courier New", "Consolas", monospace;
+  line-height: 1.4;
+}
+
+.inspection-container {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 20px 16px 28px;
+}
+
+.inspection-page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.inspection-page-header h1 {
+  margin: 0;
+  font-size: 1.2rem;
+  color: #eef3f8;
+}
+
+.inspection-grid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+.inspection-stack {
+  display: grid;
+  gap: 12px;
+}
+
+.inspection-card {
+  border: 1px solid #27303a;
+  border-radius: 6px;
+  background: #121821;
+}
+
+.inspection-card__header {
+  padding: 10px 12px;
+  border-bottom: 1px solid #27303a;
+  background: #10151d;
+}
+
+.inspection-card__title {
+  margin: 0;
+  font-size: 0.95rem;
+  color: #e7edf5;
+  letter-spacing: 0.02em;
+}
+
+.inspection-card__body {
+  padding: 12px;
+}
+
+.inspection-lead {
+  margin-top: 0;
+}
+
+.inspection-kv {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 6px 12px;
+  margin: 0;
+}
+
+.inspection-kv dt {
+  color: #8fa0b3;
+}
+
+.inspection-kv dd {
+  margin: 0;
+}
+
+.inspection-sequence {
+  font-size: 0.85rem;
+  word-break: break-word;
+}
+
+.inspection-counts {
+  display: flex;
+  gap: 14px;
+  margin-top: 10px;
+  font-size: 0.9rem;
+}
+
+.inspection-link-row {
+  margin-bottom: 0;
+}
+
+.inspection-link {
+  color: #8fb6ff;
+  text-decoration: none;
+}
+
+.inspection-link:hover {
+  text-decoration: underline;
+}
+
+.inspection-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.inspection-table th,
+.inspection-table td {
+  padding: 6px 8px;
+  text-align: left;
+  border-bottom: 1px solid #24303c;
+  vertical-align: top;
+}
+
+.inspection-table th {
+  color: #aebed0;
+  font-weight: 600;
+  background: #10151d;
+}
+
+.inspection-empty {
+  margin: 0;
+  color: #95a6ba;
+}

@@ -1,0 +1,14 @@
+<main class="inspection-container">
+  <header class="inspection-page-header">
+    <h1>Proteins</h1>
+    <p>
+      <%= link_to "Back to Home", root_path, class: "inspection-link" %>
+    </p>
+  </header>
+
+  <section class="inspection-grid">
+    <% @proteins.each do |protein| %>
+      <%= render "protein_card", protein: protein %>
+    <% end %>
+  </section>
+</main>

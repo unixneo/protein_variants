@@ -1,0 +1,10 @@
+<main class="inspection-container">
+  <%= render layout: "shared/card", locals: { title: "Protein Variant Inspection" } do %>
+    <p class="inspection-lead">
+      Local inspection interface for curated proteins, structural annotations, and amino-acid variants.
+    </p>
+    <p>
+      <%= link_to "Browse Proteins", proteins_path, class: "inspection-link" %>
+    </p>
+  <% end %>
+</main>

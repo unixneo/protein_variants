@@ -1,0 +1,20 @@
+<%= render layout: "shared/card", locals: { title: protein.uniprot_accession } do %>
+  <dl class="inspection-kv">
+    <dt>Gene</dt>
+    <dd><%= protein.gene_symbol.presence || "-" %></dd>
+    <dt>Name</dt>
+    <dd><%= protein.recommended_name.presence || "-" %></dd>
+    <dt>Organism</dt>
+    <dd><%= protein.organism.presence || "-" %></dd>
+  </dl>
+
+  <div class="inspection-counts">
+    <span>Variants <strong><%= protein.variants.size %></strong></span>
+    <span>Features <strong><%= protein.protein_features.size %></strong></span>
+    <span>Structures <strong><%= protein.structure_entries.size %></strong></span>
+  </div>
+
+  <p class="inspection-link-row">
+    <%= link_to "Open Protein", protein_path(protein), class: "inspection-link" %>
+  </p>
+<% end %>

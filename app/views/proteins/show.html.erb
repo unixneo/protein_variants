@@ -1,0 +1,109 @@
+<main class="inspection-container">
+  <header class="inspection-page-header">
+    <h1>Protein <%= @protein.uniprot_accession %></h1>
+    <p>
+      <%= link_to "Back to Proteins", proteins_path, class: "inspection-link" %>
+    </p>
+  </header>
+
+  <section class="inspection-stack">
+    <%= render layout: "shared/card", locals: { title: "Summary" } do %>
+      <dl class="inspection-kv">
+        <dt>Gene</dt>
+        <dd><%= @protein.gene_symbol.presence || "-" %></dd>
+        <dt>Recommended Name</dt>
+        <dd><%= @protein.recommended_name.presence || "-" %></dd>
+        <dt>Organism</dt>
+        <dd><%= @protein.organism.presence || "-" %></dd>
+      </dl>
+    <% end %>
+
+    <%= render layout: "shared/card", locals: { title: "Sequence Metadata" } do %>
+      <dl class="inspection-kv">
+        <dt>Sequence Length</dt>
+        <dd><%= @protein.sequence_length || "-" %></dd>
+        <dt>Sequence</dt>
+        <dd class="inspection-sequence"><%= @protein.sequence.presence || "-" %></dd>
+      </dl>
+    <% end %>
+
+    <%= render layout: "shared/card", locals: { title: "Protein Features" } do %>
+      <% if @protein.protein_features.any? %>
+        <table class="inspection-table">
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Start</th>
+              <th>End</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @protein.protein_features.each do |feature| %>
+              <tr>
+                <td><%= feature.feature_type %></td>
+                <td><%= feature.start_pos %></td>
+                <td><%= feature.end_pos %></td>
+                <td><%= feature.description.presence || "-" %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      <% else %>
+        <p class="inspection-empty">No features available.</p>
+      <% end %>
+    <% end %>
+
+    <%= render layout: "shared/card", locals: { title: "Structure Entries" } do %>
+      <% if @protein.structure_entries.any? %>
+        <table class="inspection-table">
+          <thead>
+            <tr>
+              <th>PDB</th>
+              <th>Chain</th>
+              <th>Method</th>
+              <th>Range</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @protein.structure_entries.each do |entry| %>
+              <tr>
+                <td><%= entry.pdb_id %></td>
+                <td><%= entry.chain_id.presence || "-" %></td>
+                <td><%= entry.method %></td>
+                <td><%= entry.start_pos %>..<%= entry.end_pos %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      <% else %>
+        <p class="inspection-empty">No structures available.</p>
+      <% end %>
+    <% end %>
+
+    <%= render layout: "shared/card", locals: { title: "Variants" } do %>
+      <% if @protein.variants.any? %>
+        <table class="inspection-table">
+          <thead>
+            <tr>
+              <th>HGVS</th>
+              <th>Position</th>
+              <th>Change</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @protein.variants.each do |variant| %>
+              <tr>
+                <td><%= link_to variant.hgvs_protein, variant_path(variant), class: "inspection-link" %></td>
+                <td><%= variant.residue_position %></td>
+                <td><%= variant.ref_aa %>→<%= variant.alt_aa %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      <% else %>
+        <p class="inspection-empty">No variants available.</p>
+      <% end %>
+    <% end %>
+  </section>
+</main>

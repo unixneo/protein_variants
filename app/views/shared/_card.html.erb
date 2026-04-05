@@ -1,0 +1,10 @@
+<article class="inspection-card">
+  <% if local_assigns[:title].present? %>
+    <header class="inspection-card__header">
+      <h2 class="inspection-card__title"><%= title %></h2>
+    </header>
+  <% end %>
+  <div class="inspection-card__body">
+    <%= yield %>
+  </div>
+</article>
