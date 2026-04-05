@@ -12,6 +12,25 @@
   padding: 20px 16px 28px;
 }
 
+.inspection-flash {
+  margin: 12px auto 0;
+  max-width: 980px;
+  padding: 8px 10px;
+  border: 1px solid #27303a;
+  border-radius: 6px;
+  background: #121821;
+}
+
+.inspection-flash--notice {
+  border-color: #2f4f3b;
+  color: #bde3c6;
+}
+
+.inspection-flash--alert {
+  border-color: #5a3030;
+  color: #f1b0b0;
+}
+
 .inspection-page-header {
   display: flex;
   justify-content: space-between;
@@ -102,6 +121,20 @@
 
 .inspection-link:hover {
   text-decoration: underline;
+}
+
+.inspection-button {
+  border: 1px solid #36517a;
+  border-radius: 4px;
+  background: #1b2430;
+  color: #dbe7f8;
+  padding: 7px 10px;
+  font: inherit;
+  cursor: pointer;
+}
+
+.inspection-button:hover {
+  background: #212c3a;
 }
 
 .inspection-table {

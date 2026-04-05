@@ -8,6 +8,7 @@ RSpec.describe 'Home', type: :request do
       expect(response).to have_http_status(:success)
       expect(response.body).to include('Protein Variant Inspection')
       expect(response.body).to include('Browse Proteins')
+      expect(response.body).to include('Import TP53 Fixture')
     end
   end
 end

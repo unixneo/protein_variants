@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
 
   root "home#index"
+  post "import_tp53_fixture", to: "utilities#import_tp53_fixture", as: :import_tp53_fixture
 
   resources :proteins, only: [ :index, :show ]
   resources :variants, only: [ :show ]

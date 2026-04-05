@@ -1,10 +1,17 @@
 <main class="inspection-container">
-  <%= render layout: "shared/card", locals: { title: "Protein Variant Inspection" } do %>
-    <p class="inspection-lead">
-      Local inspection interface for curated proteins, structural annotations, and amino-acid variants.
-    </p>
-    <p>
-      <%= link_to "Browse Proteins", proteins_path, class: "inspection-link" %>
-    </p>
-  <% end %>
+  <section class="inspection-stack">
+    <%= render layout: "shared/card", locals: { title: "Protein Variant Inspection" } do %>
+      <p class="inspection-lead">
+        Local inspection interface for curated proteins, structural annotations, and amino-acid variants.
+      </p>
+      <p>
+        <%= link_to "Browse Proteins", proteins_path, class: "inspection-link" %>
+      </p>
+    <% end %>
+
+    <%= render layout: "shared/card", locals: { title: "Utilities" } do %>
+      <p class="inspection-lead">Run built-in local fixture import tasks.</p>
+      <%= button_to "Import TP53 Fixture", import_tp53_fixture_path, method: :post, class: "inspection-button" %>
+    <% end %>
+  </section>
 </main>
