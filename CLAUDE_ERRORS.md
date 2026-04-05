@@ -249,6 +249,26 @@ Saw an unexpected file `CHATGPT_ERRORS.md` during a git status review and immedi
 
 ---
 
+## 22. Rewriting the Primary Project Goal
+
+**Error**
+When updating README.md and PAPER.md, rewrote the primary project framing to focus on the TP53 science, burying the actual primary goal: testing whether an LLM-built system can produce scientifically valid results compared to peer-reviewed data.
+
+**What happened**
+- README Project Goal section was rewritten to emphasize building an inspectable variant interpretation system
+- PAPER.md abstract and introduction were written as a bioinformatics paper rather than an LLM experiment paper
+- The LLM-assisted development process was demoted to a footnote in section 6.3
+
+**Why it was wrong**
+- The primary research question is about LLM-assisted scientific software development
+- TP53 missense interpretation is the test vehicle, not the goal
+- This drift is exactly the kind of objective substitution LLMs are known to exhibit
+
+**Correct rule going forward**
+> The primary goal of this project is the LLM experiment. The science is the test vehicle. Never reframe the project as primarily a bioinformatics system.
+
+---
+
 ## Operating Rules Going Forward
 
 1. Follow the stated architecture exactly
@@ -267,3 +287,4 @@ Saw an unexpected file `CHATGPT_ERRORS.md` during a git status review and immedi
 14. Do not tell Codex to stop on error
 15. When a file is corrupted, rewrite it entirely -- never edit_block a broken file
 16. Never delete or modify unexpected files without asking the user first
+17. The primary goal is the LLM experiment -- TP53 is the test vehicle, not the goal
