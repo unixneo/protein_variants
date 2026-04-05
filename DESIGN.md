@@ -75,13 +75,13 @@ The system follows a simplified blackboard architecture:
   - structured region
   - unannotated region
 
-### L3 — Verification (future)
+### L3 — Verification (Phase 2, in progress)
 - compare results to:
-  - ClinVar
-  - MaveDB
+  - ClinVar (germline classification, review status)
+  - MaveDB (Giacomelli 2018, Kotler 2018 functional scores)
   - peer-reviewed literature
 
-No probabilistic or ML inference is used in the initial system.
+No probabilistic or ML inference is used. The system is deterministic and inspectable.
 
 ---
 
@@ -123,21 +123,25 @@ This system does NOT aim to:
 
 ---
 
-## 8. Initial Milestone
+## 8. Milestones
 
-Phase 1:
+### Phase 1 — Complete
+- Rails app with multi-SQLite architecture
+- Protein and Variant domain models
+- TP53 fixture: full 393-residue sequence, 5 benchmark variants
+- VariantInterpretationService: deterministic rule engine
+- Cross-database lookups: UniProt, PDB
+- PDB structures with residue coverage from RCSB API
+- UI: inspection interface for proteins and variants
+- 44 RSpec examples, 0 failures
 
-- Rails app with SQLite
-- Protein and Variant models
-- Local fixture data (TP53)
-- Deterministic interpretation service
-- Basic UI for inspection
-
-Success criteria:
-
-- system runs end-to-end locally
-- variant → interpretation is reproducible
-- outputs are explainable
+### Phase 2 — In Progress
+- MaveDB and ClinVar databases scaffolded and populated
+- 5 benchmark variants with Giacomelli 2018 scores and ClinVar classifications
+- Variant lookup methods for MaveDB and ClinVar (next)
+- EvidenceValidator KS: formal agreement measurement (next)
+- Kotler 2018 score set integration (planned)
+- Formal validation results documented in PAPER.md (planned)
 
 ---
 
@@ -249,10 +253,10 @@ This project does not treat Rails seed files or local fixture files as permanent
 - Each external SQLite file should preserve provenance and represent a distinct knowledge source.
 
 Examples:
-- uniprot.sqlite3
-- pdb.sqlite3
-- clinvar.sqlite3
-- mavedb.sqlite3
+- uniprot.sqlite3 — canonical sequence, accession, name
+- pdb.sqlite3 — experimental structures, residue coverage, chain mappings
+- clinvar.sqlite3 — germline classifications, review status
+- mavedb.sqlite3 — functional assay scores (Giacomelli 2018, Kotler 2018)
 
 ### 12.4 Architectural Consequence
 

@@ -186,20 +186,18 @@ The order of scientific weight should be:
 
 ## 5. Current Initial Benchmark Variant Set
 
-Initial TP53 missense variants proposed for validation:
+All five TP53 missense variants are confirmed present in MaveDB and ClinVar:
 
-- p.R175H
-- p.G245S
-- p.R248Q
-- p.R273H
-- p.Y220C
+| Variant | Position | MaveDB Score (Giacomelli) | ClinVar | Review Status |
+|---|---|---|---|---|
+| p.Arg175His | 175 | 1.025 | Pathogenic | Expert panel |
+| p.Gly245Ser | 245 | 0.772 | Pathogenic | No assertion criteria |
+| p.Arg248Gln | 248 | 0.812 | Pathogenic | No assertion criteria |
+| p.Arg273His | 273 | 1.221 | Pathogenic | Expert panel |
+| p.Tyr220Cys | 220 | 1.102 | Likely pathogenic | Expert panel |
 
-These should be checked against:
-- UniProt sequence and feature context
-- PDB structural coverage
-- TP53 functional benchmark papers
-- MaveDB score sets
-- ClinVar classification
+MaveDB score set: urn:mavedb:00000068-0-1 (Giacomelli 2018)
+ClinVar variation IDs: 12374 (R175H), 12385 (G245S), 12386 (R248Q), 12392 (R273H), 12375 (Y220C)
 
 ---
 

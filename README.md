@@ -4,67 +4,83 @@ A Rails application for deterministic interpretation of protein missense variant
 
 ## Project Goal
 
-Build an inspectable, engineering-focused system for deterministic interpretation of missense variants, starting with TP53.
+Build an inspectable, engineering-focused system for deterministic interpretation of missense variants, starting with TP53. The system is a controlled experiment: can a deterministic, rule-based system produce scientifically valid results when compared to peer-reviewed experimental data?
 
 ## Scientific Objective
 
-Initial target: TP53.
+Initial target: TP53 (UniProt: P04637).
 
 Core scientific question:
-Given a missense variant, what is its likely structural/functional impact based on curated sequence, feature, and structure context?
+Given a missense variant, what is its likely structural/functional impact based on curated sequence, feature, and structure context, and does that assessment agree with experimental evidence?
 
 ## What the System Calculates
 
 Current calculations:
-- Variant residue-position lookup
-- Domain-hit detection from curated feature intervals
-- Structure-hit detection from curated structure intervals
-- Preliminary deterministic classification from rule combinations
+- Variant residue-position lookup against canonical UniProt sequence
+- Domain-hit detection from curated protein feature intervals (DomainMapper KS)
+- Structure-hit detection from curated PDB structure intervals (StructureMapper KS)
+- Preliminary deterministic classification from rule combinations (Interpretation KS)
+- External evidence lookup: MaveDB functional scores, ClinVar clinical classifications
 
-Planned calculations:
-- Residue coverage population for PDB structures (start_pos/end_pos via RCSB Sequence Coordinates API)
-- External lookup results exposed in inspection UI
-- Evidence comparison against ClinVar / MaveDB
-- Expanded rule-based impact scoring (low/moderate/high)
+Planned:
+- Expanded rule-based scoring (low/moderate/high)
+- EvidenceValidator KS: formal agreement measurement against Kotler 2018, Giacomelli 2018
 
 ## Blackboard / Knowledge Source Architecture
 
 This project follows a blackboard-style orchestration model with separate knowledge sources over multiple SQLite files.
 
 - DomainMapper KS: maps variant residue position against curated protein feature intervals.
-- StructureMapper KS: maps variant residue position against curated structure intervals.
+- StructureMapper KS: maps variant residue position against curated PDB structure intervals.
 - Interpretation KS: combines deterministic rule outputs into preliminary mechanism and confidence.
-- EvidenceValidator KS (planned): compares current interpretation with external evidence sources.
+- EvidenceValidator KS (in progress): compares interpretation against MaveDB and ClinVar.
 
-The system uses multiple SQLite database files as separate scientific data sources (`db/development.sqlite3`, `db/uniprot.sqlite3`, `db/pdb.sqlite3`).
-The app orchestrates across those sources without merging them into one large database.
-Current interpretation is deterministic and inspectable, not an AI prediction system.
+SQLite databases as scientific artifacts:
+- `db/development.sqlite3` — main app: proteins, variants, features, structure entries
+- `db/uniprot.sqlite3` — UniProt canonical accession and name
+- `db/pdb.sqlite3` — PDB structures with residue coverage (5 curated structures for P04637)
+- `db/mavedb.sqlite3` — MaveDB functional scores (Giacomelli 2018, 5 benchmark variants)
+- `db/clinvar.sqlite3` — ClinVar germline classifications (5 benchmark variants)
 
-## Initial Validation Plan
+## Benchmark Variant Set
 
-- Confirm model-to-database routing for main, Uniprot, and PDB sources.
-- Validate deterministic interpretation branch coverage with reproducible fixture-driven tests.
-- Validate cross-database lookup behavior and inspectability in request/service specs.
+All five benchmark variants are loaded with full external evidence:
+
+| Variant | MaveDB Score | ClinVar | Review Status |
+|---|---|---|---|
+| p.Arg175His | 1.025 | Pathogenic | Expert panel |
+| p.Gly245Ser | 0.772 | Pathogenic | No assertion criteria |
+| p.Arg248Gln | 0.812 | Pathogenic | No assertion criteria |
+| p.Arg273His | 1.221 | Pathogenic | Expert panel |
+| p.Tyr220Cys | 1.102 | Likely pathogenic | Expert panel |
 
 ## Status
 
-Active development. Phase 1 infrastructure complete.
+Active development. Phase 1 complete. Phase 2 (evidence integration) in progress.
 
 Current capabilities:
-- Protein and Variant domain models
-- Multi-SQLite architecture: `db/development.sqlite3`, `db/uniprot.sqlite3`, `db/pdb.sqlite3`
-- Schema isolation: migration bleed between databases fixed; external DBs use isolated migration paths
-- TP53 (P04637) fixture loaded: full 393-residue sequence, 5 benchmark variants, 2 protein features, 2 structure entries
-- `VariantInterpretationService`: deterministic rule engine covering all four branch outcomes
-- `Protein#uniprot_entry`: cross-database lookup into `db/uniprot.sqlite3`
-- `Protein#pdb_structures`: cross-database lookup into `db/pdb.sqlite3`
-- 5 curated PDB structures for P04637 loaded into `db/pdb.sqlite3` via `script/fetch_pdb_structures.rb`
+- Multi-SQLite architecture: 5 separate scientific data sources
+- TP53 (P04637): full 393-residue canonical sequence
+- 5 benchmark variants with domain/structure context
+- `VariantInterpretationService`: deterministic rule engine, all four branch outcomes
+- `Protein#uniprot_entry`: cross-database lookup into UniProt DB
+- `Protein#pdb_structures`: cross-database lookup into PDB DB (with residue coverage)
+- `Mavedb::Score` and `Clinvar::Classification` models with populated data
+- Standalone fetch scripts for RCSB, MaveDB, and ClinVar APIs
 - Dark card-based inspection UI: home, proteins index/show, variant show
-- RSpec suite: model, service, request, and view specs
+- 44 RSpec examples, 0 failures
+
+Next:
+- Add `Variant#mavedb_score` and `Variant#clinvar_classification` lookup methods
+- Expose evidence data on variant show page
+- Implement EvidenceValidator KS: formal agreement measurement
 
 ## Design
 
 See `DESIGN.md` for architecture and scope.
+See `PAPER.md` for the emerging scientific narrative.
+See `REFERENCES.md` for data sources and peer-reviewed benchmarks.
+See `CLAUDE_ERRORS.md` for documented LLM failure modes and operating rules.
 
 ## Requirements
 
@@ -79,19 +95,18 @@ git clone git@github.com:unixneo/protein_variants.git
 cd protein_variants
 bundle install
 bin/rails db:create db:migrate
+bin/rails db:rebuild_uniprot db:rebuild_pdb db:rebuild_mavedb db:rebuild_clinvar
+bundle exec rails protein_variants:import_tp53_fixture
+ruby script/fetch_pdb_structures.rb
+ruby script/fetch_mavedb_scores.rb
+ruby script/fetch_clinvar_classifications.rb
 bundle exec rspec
 ```
 
 ## Data Strategy
 
-This project treats the primary SQLite database as the canonical application-state artifact.
-
-External or large reference datasets are intended to be stored in separate SQLite database files rather than merged into one monolithic database. This preserves provenance, keeps the main app database small, and supports reproducible scientific workflows.
-
-Current local import utilities are development/bootstrap tools, not the long-term canonical data model
+Each external data source is stored in its own SQLite file, preserving provenance and keeping the main application database small. SQLite files are treated as versioned scientific artifacts, not just storage backends.
 
 ## Environment
 
-This project is development-only.
-
-It is not currently designed around separate production infrastructure. The primary application database and sidecar source databases are treated as development-time scientific artifacts.
+Development-only. Not designed for production deployment.
