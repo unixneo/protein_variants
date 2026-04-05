@@ -122,5 +122,20 @@
         <p class="inspection-empty">No ClinVar classification found for <%= @variant.hgvs_protein %>.</p>
       <% end %>
     <% end %>
+
+    <%= render layout: "shared/card", locals: { title: "Evidence Agreement" } do %>
+      <dl class="inspection-kv">
+        <dt>System Mechanism</dt>
+        <dd><%= @evidence[:system_mechanism] %></dd>
+        <dt>System Confidence</dt>
+        <dd><%= @evidence[:system_confidence] %></dd>
+        <dt>MaveDB Agreement</dt>
+        <dd><%= @evidence.dig(:mavedb, :agreement) %> — <%= @evidence.dig(:mavedb, :note) %></dd>
+        <dt>ClinVar Agreement</dt>
+        <dd><%= @evidence.dig(:clinvar, :agreement) %> — <%= @evidence.dig(:clinvar, :note) %></dd>
+        <dt>Overall Agreement</dt>
+        <dd><%= @evidence[:overall_agreement] %></dd>
+      </dl>
+    <% end %>
   </section>
 </main>

@@ -21,6 +21,16 @@ RSpec.describe 'variants/show.html.erb', type: :view do
         matching_structures: []
       }
     )
+    assign(
+      :evidence,
+      {
+        system_mechanism: 'structured functional region',
+        system_confidence: 'medium',
+        mavedb: { agreement: :agree, note: 'ok' },
+        clinvar: { agreement: :agree, note: 'ok' },
+        overall_agreement: :agree
+      }
+    )
 
     render
 
