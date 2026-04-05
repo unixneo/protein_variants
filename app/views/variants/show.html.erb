@@ -88,5 +88,39 @@
         <p class="inspection-empty">No matching structures.</p>
       <% end %>
     <% end %>
+
+    <%= render layout: "shared/card", locals: { title: "MaveDB Functional Score" } do %>
+      <% mavedb = @variant.mavedb_score %>
+      <% if mavedb %>
+        <dl class="inspection-kv">
+          <dt>Score</dt>
+          <dd><%= "%.4f" % mavedb.score %></dd>
+          <dt>Source</dt>
+          <dd><%= mavedb.source %></dd>
+          <dt>Score Set</dt>
+          <dd><%= mavedb.score_set_urn %></dd>
+        </dl>
+      <% else %>
+        <p class="inspection-empty">No MaveDB score found for <%= @variant.hgvs_protein %>.</p>
+      <% end %>
+    <% end %>
+
+    <%= render layout: "shared/card", locals: { title: "ClinVar Classification" } do %>
+      <% clinvar = @variant.clinvar_classification %>
+      <% if clinvar %>
+        <dl class="inspection-kv">
+          <dt>Classification</dt>
+          <dd><%= clinvar.clinical_significance %></dd>
+          <dt>Review Status</dt>
+          <dd><%= clinvar.review_status %></dd>
+          <dt>Last Evaluated</dt>
+          <dd><%= clinvar.last_evaluated.presence || "-" %></dd>
+          <dt>Variation ID</dt>
+          <dd><%= clinvar.variation_id %></dd>
+        </dl>
+      <% else %>
+        <p class="inspection-empty">No ClinVar classification found for <%= @variant.hgvs_protein %>.</p>
+      <% end %>
+    <% end %>
   </section>
 </main>
