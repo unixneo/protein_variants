@@ -284,3 +284,21 @@ ruby script/fetch_clinvar_classifications.rb
 - Expanded protein feature coverage from full UniProt annotation set
 - Extension to variants with uncertain or intermediate functional classification
 - Formal submission as a short methods paper or research note
+
+## Appendix C: Future Extensions
+
+### Tau and Amyloid-Beta: Competitive Binding at Microtubules
+
+A natural extension of this system is to apply the same blackboard architecture to the proteins implicated in Alzheimer's disease, motivated by Julian et al. 2026 (PNAS Nexus, doi:10.1093/pnasnexus/pgag034).
+
+That study proposes a unifying theory: amyloid-beta peptides compete with tau for the same microtubule binding sites. The sequence region of amyloid-beta that binds microtubules resembles the microtubule-binding region of tau, suggesting a direct displacement mechanism that links the two hallmark proteins of Alzheimer's disease.
+
+The protein_variants blackboard architecture could be extended to:
+
+- Tau (UniProt P10636): map microtubule-binding region as a ProteinFeature interval, load PDB structures of tau bound to tubulin, and interpret missense variants in the binding region
+- APP/Amyloid-beta (UniProt P05067): annotate the amyloid-beta peptide region and map structural coverage
+- Compare the two binding sequence regions for overlap -- the deterministic basis for reasoning about competitive displacement at the sequence/domain level
+
+This would not simulate molecular dynamics or reproduce the wet lab binding competition assay. It would produce a deterministic, inspectable structural context: which residues of each protein fall in the relevant binding region, which are covered by experimental structures, and which missense variants would be predicted to affect binding based on domain and structure hits.
+
+This extension would also serve as a second test case for the primary research question: can an LLM-built deterministic system produce scientifically grounded outputs for a different protein system, against a different class of experimental evidence?
