@@ -1,6 +1,8 @@
 **Version:** v0.1.0
 **DOI:** https://doi.org/10.5281/zenodo.19436320
 
+## Techical Report: A Deterministic Blackboard Knowledge Source Engine for Protein Missense Variant Interpretation: A Controlled Experiment in LLM-Assisted Scientific Software Development
+
 # protein_variants
 
 A Rails application for deterministic interpretation of protein missense variants.
