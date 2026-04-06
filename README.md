@@ -1,7 +1,9 @@
 **Version:** v0.1.0
 **DOI:** https://doi.org/10.5281/zenodo.19436320
 
-## Techical Report: A Deterministic Blackboard Knowledge Source Engine for Protein Missense Variant Interpretation: A Controlled Experiment in LLM-Assisted Scientific Software Development
+#### Techical Report: A Deterministic Blackboard Knowledge Source Engine for Protein Missense Variant Interpretation: A Controlled Experiment in LLM-Assisted Scientific Software Development  
+
+**DOI:** https://doi.org/10.5281/zenodo.19438177
 
 # protein_variants
 
