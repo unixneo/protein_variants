@@ -145,3 +145,20 @@ new proteins, new domain/structure intervals, new validation question.
 - 🟡 Empirical calibration of confidence score thresholds against held-out validation set
 - 🟡 Expanded protein feature coverage from full UniProt annotation set
 - 🟡 Expanded PDB structure coverage beyond 5 curated structures
+
+## Essential Amino Acid Extension (v0.2.0 candidate)
+
+Scientific question: Can the same deterministic blackboard lookup engine
+provide structural context for missense variants in proteins involved in
+essential amino acid biosynthesis, transport, or metabolism?
+
+Data survey (before any code):
+- [ ] PAH P00439 -- Phe metabolism, PKU, ClinVar coverage check
+- [ ] SLC7A5 Q01650 -- large neutral AA transporter, ClinVar check
+- [ ] One aminoacyl-tRNA synthetase (FARS1 or WARS1) -- UniProt annotation check
+- [ ] MaveDB coverage check for all three
+
+Implementation (after data survey confirms viability):
+- [ ] New seed data: domain/structure intervals for confirmed candidates
+- [ ] New specs
+- [ ] Update README.md and PAPER.md
