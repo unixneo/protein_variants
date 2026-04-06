@@ -1,0 +1,78 @@
+{
+  "protein": {
+    "uniprot_accession": "P05067",
+    "gene_symbol": "APP",
+    "recommended_name": "Amyloid-beta precursor protein",
+    "organism": "Homo sapiens",
+    "sequence": null,
+    "sequence_length": 770
+  },
+  "protein_features": [
+    {
+      "feature_type": "chain",
+      "start_pos": 672,
+      "end_pos": 713,
+      "description": "Amyloid-beta protein 42",
+      "source_db": "UniProt"
+    },
+    {
+      "feature_type": "chain",
+      "start_pos": 672,
+      "end_pos": 711,
+      "description": "Amyloid-beta protein 40",
+      "source_db": "UniProt"
+    },
+    {
+      "feature_type": "domain",
+      "start_pos": 28,
+      "end_pos": 189,
+      "description": "E1",
+      "source_db": "UniProt"
+    },
+    {
+      "feature_type": "domain",
+      "start_pos": 374,
+      "end_pos": 565,
+      "description": "E2",
+      "source_db": "UniProt"
+    }
+  ],
+  "structure_entries": [
+    {
+      "pdb_id": "1IYT",
+      "method": "Solution NMR",
+      "resolution": null,
+      "chain_id": "A",
+      "start_pos": 672,
+      "end_pos": 713
+    },
+    {
+      "pdb_id": "2LMN",
+      "method": "Solid-State NMR",
+      "resolution": null,
+      "chain_id": "A",
+      "start_pos": 672,
+      "end_pos": 711
+    }
+  ],
+  "variants": [
+    {
+      "hgvs_protein": "p.Ala692Gly",
+      "residue_position": 692,
+      "ref_aa": "A",
+      "alt_aa": "G"
+    },
+    {
+      "hgvs_protein": "p.Val717Ile",
+      "residue_position": 717,
+      "ref_aa": "V",
+      "alt_aa": "I"
+    },
+    {
+      "hgvs_protein": "p.Lys670Asn",
+      "residue_position": 670,
+      "ref_aa": "K",
+      "alt_aa": "N"
+    }
+  ]
+}

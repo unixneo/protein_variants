@@ -1,0 +1,93 @@
+{
+  "protein": {
+    "uniprot_accession": "P10636",
+    "gene_symbol": "MAPT",
+    "recommended_name": "Microtubule-associated protein tau",
+    "organism": "Homo sapiens",
+    "sequence": null,
+    "sequence_length": 758
+  },
+  "protein_features": [
+    {
+      "feature_type": "region",
+      "start_pos": 561,
+      "end_pos": 685,
+      "description": "Microtubule-binding domain",
+      "source_db": "UniProt"
+    },
+    {
+      "feature_type": "repeat",
+      "start_pos": 561,
+      "end_pos": 591,
+      "description": "Tau/MAP microtubule-binding repeat R1",
+      "source_db": "UniProt"
+    },
+    {
+      "feature_type": "repeat",
+      "start_pos": 592,
+      "end_pos": 622,
+      "description": "Tau/MAP microtubule-binding repeat R2",
+      "source_db": "UniProt"
+    },
+    {
+      "feature_type": "repeat",
+      "start_pos": 623,
+      "end_pos": 653,
+      "description": "Tau/MAP microtubule-binding repeat R3",
+      "source_db": "UniProt"
+    },
+    {
+      "feature_type": "repeat",
+      "start_pos": 654,
+      "end_pos": 685,
+      "description": "Tau/MAP microtubule-binding repeat R4",
+      "source_db": "UniProt"
+    }
+  ],
+  "structure_entries": [
+    {
+      "pdb_id": "6CVJ",
+      "method": "Electron Microscopy",
+      "resolution": null,
+      "chain_id": "A",
+      "start_pos": 514,
+      "end_pos": 599
+    },
+    {
+      "pdb_id": "6CVN",
+      "method": "Electron Microscopy",
+      "resolution": null,
+      "chain_id": "A",
+      "start_pos": 514,
+      "end_pos": 715
+    },
+    {
+      "pdb_id": "7PQC",
+      "method": "Electron Microscopy",
+      "resolution": null,
+      "chain_id": "A",
+      "start_pos": 519,
+      "end_pos": 712
+    }
+  ],
+  "variants": [
+    {
+      "hgvs_protein": "p.Pro619Leu",
+      "residue_position": 619,
+      "ref_aa": "P",
+      "alt_aa": "L"
+    },
+    {
+      "hgvs_protein": "p.Pro619Ser",
+      "residue_position": 619,
+      "ref_aa": "P",
+      "alt_aa": "S"
+    },
+    {
+      "hgvs_protein": "p.Arg724Trp",
+      "residue_position": 724,
+      "ref_aa": "R",
+      "alt_aa": "W"
+    }
+  ]
+}
