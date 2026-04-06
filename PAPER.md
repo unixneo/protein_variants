@@ -4,6 +4,7 @@
 
 **Status:** Working draft. Not yet submitted. Updated as system develops.
 **Version:** v0.1.0
+**DOI:** https://doi.org/10.5281/zenodo.19436320
 **Date:** 2026-04-06
 
 ---
