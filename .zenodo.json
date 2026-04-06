@@ -1,0 +1,39 @@
+{
+  "title": "protein_variants: A Controlled Experiment in LLM-Assisted Scientific Software Development Using a Blackboard Knowledge Source Architecture for Deterministic Protein Missense Variant Interpretation",
+  "description": "A deterministic, rule-based structural evidence lookup engine for interpreting protein missense variants, built primarily using large language models (Claude and ChatGPT) as engineering collaborators. The system follows a blackboard architecture with four Knowledge Sources: DomainMapper, StructureMapper, Interpretation, and EvidenceValidator. Variant interpretation is evaluated against MaveDB functional scores and ClinVar clinical classifications. The primary research contribution is the LLM-assisted development workflow and its documented failure modes -- not the variant calls themselves. Forty failure modes are documented across two LLM phases (15 ChatGPT, 25 Claude). The system achieves 100% agreement with peer-reviewed experimental evidence across five canonical TP53 hotspot variants, and produces scientifically correct no_data and ambiguous agreement results for five intermediate/uncertain classification variants. 90 RSpec examples, 0 failures.",
+  "creators": [
+    {
+      "name": "Bass, Tim",
+      "orcid": "0000-0001-9368-6838",
+      "affiliation": "Independent Researcher"
+    }
+  ],
+  "keywords": [
+    "LLM-assisted software development",
+    "blackboard architecture",
+    "knowledge source",
+    "missense variant interpretation",
+    "TP53",
+    "MaveDB",
+    "ClinVar",
+    "deterministic system",
+    "scientific software engineering",
+    "Ruby on Rails",
+    "SQLite",
+    "Claude",
+    "ChatGPT",
+    "Codex"
+  ],
+  "license": "MIT",
+  "version": "v0.1.0",
+  "upload_type": "software",
+  "publication_date": "2026-04-06",
+  "related_identifiers": [
+    {
+      "identifier": "10.5281/zenodo.18824512",
+      "relation": "isSupplementTo",
+      "scheme": "doi"
+    }
+  ],
+  "notes": "Development workflow: Claude (Anthropic) as architect, scientist, and prompt author; Codex CLI as code implementer. Initial phase used ChatGPT (OpenAI); project transferred to Claude after 15 documented failure modes. See CLAUDE_ERRORS.md and CHATGPT_ERRORS.md in the repository."
+}
