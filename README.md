@@ -1,3 +1,5 @@
+**Version:** v0.1.0
+
 # protein_variants
 
 A Rails application for deterministic interpretation of protein missense variants.
@@ -143,3 +145,15 @@ Each external data source is stored in its own SQLite file, preserving provenanc
 ## Environment
 
 Development-only. Not designed for production deployment.
+
+## Version History
+
+### v0.1.0 (2026-04-06)
+- Phase 1-3: TP53 blackboard architecture, 5 hotspot benchmark variants,
+  deterministic interpretation pipeline, full external evidence integration
+- Phase 4: Tau (P10636) and APP (P05067) Alzheimer's protein extension
+- Phase 5: 5 intermediate/uncertain classification variants, all four
+  interpretation branches exercised
+- 90 RSpec examples, 0 failures
+- 25 Claude failure modes + 15 ChatGPT failure modes documented
+- PAPER.md: complete two-LLM development narrative, ready for submission review

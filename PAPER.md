@@ -3,6 +3,8 @@
 ## Deterministic Interpretation of TP53 Missense Variants Using a Blackboard Knowledge Source Architecture
 
 **Status:** Working draft. Not yet submitted. Updated as system develops.
+**Version:** v0.1.0
+**Date:** 2026-04-06
 
 ---
 
