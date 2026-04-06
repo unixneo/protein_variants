@@ -18,6 +18,14 @@
   </head>
 
   <body class="inspection-body">
+    <nav class="inspection-nav">
+      <span class="inspection-nav__title">protein_variants</span>
+      <span class="inspection-nav__sub">
+        Deterministic TP53 variant interpretation · LLM-assisted scientific software experiment
+      </span>
+      <%= link_to "Home", root_path, class: "inspection-nav__link" %>
+      <%= link_to "Proteins", proteins_path, class: "inspection-nav__link" %>
+    </nav>
     <% flash.each do |key, message| %>
       <div class="inspection-flash inspection-flash--<%= key %>"><%= message %></div>
     <% end %>

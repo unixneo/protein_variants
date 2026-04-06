@@ -1,9 +1,23 @@
 # TODO
 
 ## Primary Goal
-This project is a controlled experiment in LLM-assisted scientific software development:
-**Can a deterministic system built primarily using LLMs produce scientifically valid results when compared to peer-reviewed experimental data?**
-The LLM experiment is the primary goal. TP53 missense interpretation is the test vehicle.
+
+This project is a controlled experiment in LLM-assisted scientific software development.
+
+**Central question:** Can a rule-based lookup system built primarily using LLMs produce
+outputs that are consistent with peer-reviewed experimental evidence?
+
+**What this system is:** A deterministic structural evidence lookup engine. Given a
+missense variant residue position, it checks two things: (1) does the position fall in
+a curated functional domain annotation, and (2) does it fall in an experimentally
+resolved PDB structure? It then compares that binary output against MaveDB functional
+scores and ClinVar classifications to measure agreement.
+
+**What this system is not:** A classifier. An ML model. A variant effect predictor.
+A clinical tool. A replacement for experimental data.
+
+The LLM experiment is the primary research contribution.
+TP53 missense interpretation is the test vehicle.
 
 ## Data Sources (SQLite Databases)
 - 🟢 Main DB (`db/development.sqlite3`): proteins, variants, protein_features, structure_entries
@@ -12,7 +26,7 @@ The LLM experiment is the primary goal. TP53 missense interpretation is the test
 - 🟢 MaveDB DB (`db/mavedb.sqlite3`): Giacomelli2018 + Kotler2018 scores (10 total, 5 variants x 2 sources)
 - 🟢 ClinVar DB (`db/clinvar.sqlite3`): germline classifications, review status (5 variants)
 
-## Benchmark Variant Set
+## Benchmark Variant Set (TP53 / P04637)
 - 🟢 p.Arg175His — Giacomelli: 1.025 | Kotler: 1.791 | ClinVar: Pathogenic (expert panel)
 - 🟢 p.Gly245Ser — Giacomelli: 0.772 | Kotler: 1.146 | ClinVar: Pathogenic (no assertion criteria)
 - 🟢 p.Arg248Gln — Giacomelli: 0.812 | Kotler: 1.233 | ClinVar: Pathogenic (no assertion criteria)
@@ -53,14 +67,20 @@ The LLM experiment is the primary goal. TP53 missense interpretation is the test
 
 ## Variant Interpretation
 - 🟢 VariantInterpretationService: deterministic rules, all four branch outcomes
-- 🟢 Expand scoring to explicit low/moderate/high classification
-- 🟢 Integrate MaveDB score and ClinVar classification into interpretation output
+- 🟢 Structural confidence scoring: domain axis (0–30), structure axis (0–20), resolution bonus (0–10)
+- 🟢 Evidence confidence scoring: MaveDB axis (0–20), ClinVar axis (0–15/5)
+- 🟢 Combined confidence level: :high (≥70) / :moderate (≥40) / :low (<40)
 
 ## UI (Inspection Interface)
-- 🟢 Home page, proteins index/show, variant show — all implemented
+- 🟢 Home page: research goal, benchmark results table, architecture summary
+- 🟢 Persistent nav bar: mission statement on every page
+- 🟢 Framing context on proteins index, protein show, variant show pages
+- 🟢 Variant show: Evidence Agreement card promoted to top (primary finding first)
+- 🟢 Variant show: plain-language finding statement (consistent/disagrees/insufficient)
+- 🟢 Variant show: confidence badge with color coding (:high/:moderate/:low)
+- 🟢 Variant show: agreement color coding (agree/disagree/no_data)
 - 🟢 Protein show: UniProt entry and PDB structures cards
 - 🟢 Variant show: MaveDB score and ClinVar classification cards
-- 🟢 Variant show: Evidence Agreement card (system mechanism, MaveDB agreement, ClinVar agreement, overall)
 
 ## Testing
 - 🟢 67 examples, 0 failures, 2 pending (development-only DB path specs)
@@ -69,8 +89,7 @@ The LLM experiment is the primary goal. TP53 missense interpretation is the test
 - 🟢 Specs for quantitative confidence scoring (structural + evidence axes, combined_confidence_level)
 - 🟢 Specs for Mavedb::Score and Clinvar::Classification models
 
-## Validation Results (Phase 2 Complete)
-- 🟢 EvidenceValidatorService wired into VariantsController#show
+## Validation Results
 - 🟢 All 5 benchmark variants: agree across Giacomelli2018, Kotler2018, and ClinVar
 - 🟢 Overall agreement rate: 100% (5/5 variants)
 - 🟢 Formal results documented in PAPER.md
@@ -79,19 +98,41 @@ The LLM experiment is the primary goal. TP53 missense interpretation is the test
 - 🟢 23 failure modes documented in CLAUDE_ERRORS.md
 - 🟢 Goal substitution identified as critical failure mode (Error 22)
 - 🟢 Context window cost identified as structural economic constraint (Error 23)
+- 🟢 System correctly framed as rule-based lookup engine, not classifier (clarified in docs and UI)
 - 🟢 All findings documented in PAPER.md sections 6.2, 6.3, 6.4
 
-## Next Steps (Start Fresh Session)
-- 🟡 Start new conversation for any further work (context window hygiene -- Error 23)
-- 🟢 Expand scoring to explicit low/moderate/high classification
-- 🟢 Add specs for Mavedb::Score and Clinvar::Classification models
+## Next Steps
 - 🟡 Extend benchmark set to variants with intermediate or uncertain functional classification
+  -- this is the real test: hotspot variants are expected to agree, edge cases are not
 - 🟡 Consider formal submission of PAPER.md as a short methods/research note
 
-## Future Extensions (Beyond TP53)
-- 🟡 Extend to tau (UniProt P10636): map microtubule-binding region as ProteinFeature, load PDB structures of tau bound to tubulin
-- 🟡 Extend to APP/amyloid-beta (UniProt P05067): annotate amyloid-beta peptide region and structural context
-- 🟡 Compare tau microtubule-binding sequence region against amyloid-beta sequence for overlap
-  -- basis of Julian et al. 2026 competitive binding hypothesis (doi:10.1093/pnasnexus/pgag034)
-- 🟡 Would not simulate molecular dynamics -- provides deterministic structural context
-  for reasoning about binding competition at sequence/domain level
+## Phase 4: Alzheimer's Protein Extension (Next Session)
+
+Scientific question: Julian et al. 2026 (PNAS Nexus, doi:10.1093/pnasnexus/pgag034)
+proposes amyloid-beta competes with tau for the same microtubule binding sites.
+Can the same blackboard lookup engine provide deterministic structural context
+for this competitive binding hypothesis?
+
+**Planned work:**
+- 🟡 Tau (UniProt P10636): add as second Protein, map microtubule-binding repeat region
+  as ProteinFeature intervals, load PDB structures of tau bound to tubulin
+- 🟡 APP/Amyloid-beta (UniProt P05067): add as third Protein, annotate amyloid-beta
+  peptide region (APP residues ~672-713), map structural coverage
+- 🟡 Compare tau microtubule-binding sequence region against amyloid-beta sequence
+  for interval overlap — deterministic basis for competitive displacement reasoning
+- 🟡 Identify appropriate experimental evidence sources for validation
+  (different from MaveDB/ClinVar — need tau/amyloid binding assay data)
+- 🟡 Extend EvidenceValidator KS for new evidence source type if needed
+
+**Session entry point:**
+Open project, read README.md, TODO.md, PAPER.md Appendix C, and Julian et al. 2026.
+First task: fetch UniProt P10636 and P05067 feature annotations before any code.
+
+**Scope constraint:**
+No molecular dynamics. No binding simulation. Same deterministic lookup engine,
+new proteins, new domain/structure intervals, new validation question.
+
+## Future Extensions (Post-Phase 4)
+- 🟡 Empirical calibration of confidence score thresholds against held-out validation set
+- 🟡 Expanded protein feature coverage from full UniProt annotation set
+- 🟡 Expanded PDB structure coverage beyond 5 curated structures

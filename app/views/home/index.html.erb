@@ -1,9 +1,59 @@
 <main class="inspection-container">
   <section class="inspection-stack">
-    <%= render layout: "shared/card", locals: { title: "Protein Variant Inspection" } do %>
+
+    <%= render layout: "shared/card", locals: { title: "Research Goal" } do %>
       <p class="inspection-lead">
-        Local inspection interface for curated proteins, structural annotations, and amino-acid variants.
+        Can a deterministic system built primarily with LLMs produce scientifically valid
+        results when compared to peer-reviewed experimental data?
       </p>
+      <p>
+        This application processes public protein variant data for TP53 (UniProt P04637)
+        using a blackboard architecture with four knowledge sources: DomainMapper,
+        StructureMapper, Interpretation, and EvidenceValidator. It then compares its
+        classification output against two independent peer-reviewed evidence sources:
+        MaveDB functional scores (Giacomelli 2018, Kotler 2018) and ClinVar germline
+        classifications.
+      </p>
+    <% end %>
+
+    <%= render layout: "shared/card", locals: { title: "Benchmark Results" } do %>
+      <table class="inspection-table">
+        <thead>
+          <tr>
+            <th>Variant</th>
+            <th>MaveDB score</th>
+            <th>ClinVar</th>
+            <th>System confidence</th>
+            <th>Agreement</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>p.Arg175His</td><td>1.025</td><td>Pathogenic (expert panel)</td><td>High</td><td>Agree</td></tr>
+          <tr><td>p.Gly245Ser</td><td>0.772</td><td>Pathogenic</td><td>High</td><td>Agree</td></tr>
+          <tr><td>p.Arg248Gln</td><td>0.812</td><td>Pathogenic</td><td>High</td><td>Agree</td></tr>
+          <tr><td>p.Arg273His</td><td>1.221</td><td>Pathogenic (expert panel)</td><td>High</td><td>Agree</td></tr>
+          <tr><td>p.Tyr220Cys</td><td>1.102</td><td>Likely pathogenic (expert panel)</td><td>High</td><td>Agree</td></tr>
+        </tbody>
+      </table>
+      <p style="margin-top: 0.75rem;">
+        Overall agreement rate: <strong>100% (5/5 variants)</strong> across MaveDB and ClinVar.
+      </p>
+    <% end %>
+
+    <%= render layout: "shared/card", locals: { title: "Architecture" } do %>
+      <p>
+        Four knowledge sources over five SQLite databases. Scoring combines a structural
+        axis (0–60: domain hit, PDB structure hit, resolution bonus) and an evidence axis
+        (0–40: MaveDB score magnitude, ClinVar review quality). Combined total ≥ 70 → high,
+        ≥ 40 → moderate, else low.
+      </p>
+      <p>
+        Two-stage LLM workflow: Claude (architect, scientist, prompt author) +
+        Codex CLI (implementer). Failure modes documented in CLAUDE_ERRORS.md.
+      </p>
+    <% end %>
+
+    <%= render layout: "shared/card", locals: { title: "Inspect" } do %>
       <p>
         <%= link_to "Browse Proteins", proteins_path, class: "inspection-link" %>
       </p>
@@ -13,5 +63,6 @@
       <p class="inspection-lead">Run built-in local fixture import tasks.</p>
       <%= button_to "Import TP53 Fixture", import_tp53_fixture_path, method: :post, class: "inspection-button" %>
     <% end %>
+
   </section>
 </main>

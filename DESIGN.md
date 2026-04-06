@@ -2,16 +2,32 @@
 
 ## 1. Purpose
 
-This project builds a small, deterministic system for interpreting protein missense variants using curated biological data and simple structural/annotation rules.
+This project builds a small, deterministic, rule-based lookup engine for interpreting
+protein missense variants using curated biological data.
 
-The goal is not to "predict biology" broadly, but to:
+The primary research goal is to evaluate a controlled experiment in LLM-assisted
+scientific software development: can a system built primarily using LLMs produce outputs
+that are consistent with peer-reviewed experimental evidence?
 
-- normalize protein and variant data
-- map variants into structural and functional context
-- generate interpretable, testable outputs
-- validate those outputs against peer-reviewed and curated sources
+**What the system does:**
+Given a missense variant residue position, it applies two lookups and one rule:
+- Does the position fall inside a curated UniProt functional domain annotation?
+- Does the position fall inside a curated PDB experimental structure coverage interval?
+- If yes to one or both, the variant is flagged as residing in a structurally or
+  functionally characterized region.
 
-This follows the same validation-first approach used in StellarPop.
+That binary output is then compared against MaveDB functional scores and ClinVar
+clinical classifications to measure agreement.
+
+**What the system is not:**
+This is not a classifier, not a variant effect predictor, and not a probabilistic
+inference system. It makes no novel biological claims. It does not outperform existing
+tools and does not attempt to. Every output is a deterministic consequence of curated
+input data and explicit rules.
+
+The goal is not to "predict biology" broadly. The goal is to demonstrate that an
+LLM-assisted development workflow, when properly disciplined, can produce a correct,
+inspectable, scientifically auditable system.
 
 ---
 

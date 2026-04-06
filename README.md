@@ -6,9 +6,22 @@ A Rails application for deterministic interpretation of protein missense variant
 
 This project is a controlled experiment in LLM-assisted scientific software development:
 
-**Can an LLM-built deterministic system produce scientifically valid results when compared to peer-reviewed experimental data?**
+**Can a rule-based lookup system built primarily using LLMs produce outputs that
+are consistent with peer-reviewed experimental evidence?**
 
-The system is built using a two-stage human-AI workflow: Claude (Anthropic) acts as architect, scientist, and prompt author; Codex CLI acts as code implementer. Documented failure modes and operating rules are maintained in `CLAUDE_ERRORS.md`. The workflow itself is part of the research.
+This is not a classifier. It is not a machine learning system. It does not predict
+variant pathogenicity. It is a deterministic, rule-based structural evidence lookup
+engine that asks a narrow question: does this variant's residue position fall inside
+a known functional domain and an experimentally resolved protein structure?
+
+The answer to that question — yes or no — is then compared against two independent
+peer-reviewed evidence sources (MaveDB functional scores, ClinVar clinical
+classifications) to measure agreement. The research contribution is the development
+workflow and the validation methodology, not the variant calls themselves.
+
+The experimental vehicle is TP53 missense variant interpretation because TP53 is
+well-characterized, the validation data is publicly available, and the correct answers
+for canonical hotspot variants are unambiguous.
 
 ## Scientific Test Vehicle
 
@@ -17,16 +30,25 @@ The experiment uses TP53 missense variant interpretation as the test domain. TP5
 Core scientific question:
 Given a missense variant, what is its likely structural/functional impact based on curated sequence, feature, and structure context -- and does the system's output agree with peer-reviewed experimental evidence?
 
-## What the System Calculates
+## What the System Does
 
-Current calculations:
-- Variant residue-position lookup against canonical UniProt sequence
-- Domain-hit detection from curated protein feature intervals (DomainMapper KS)
-- Structure-hit detection from curated PDB structure intervals (StructureMapper KS)
-- Preliminary deterministic classification from rule combinations (Interpretation KS)
-- Quantitative confidence scoring: structural axis (0–60) + evidence axis (0–40) → :high/:moderate/:low
-- External evidence lookup: MaveDB functional scores (Giacomelli 2018, Kotler 2018), ClinVar classifications
-- EvidenceValidator KS: formal agreement measurement, 100% agreement rate across all 5 benchmark variants
+Given a missense variant (e.g. p.Arg175His), the system:
+
+1. Looks up whether the variant's residue position falls inside a curated UniProt
+   functional domain annotation (DomainMapper KS).
+2. Looks up whether the residue position falls inside a curated PDB structure
+   coverage interval (StructureMapper KS).
+3. Applies explicit deterministic rules to those two boolean results to produce a
+   mechanism label and a structural confidence score (Interpretation KS).
+4. Compares that output against MaveDB functional scores and ClinVar clinical
+   classifications to measure agreement (EvidenceValidator KS).
+
+Every step is inspectable and traceable to its source database. There is no
+probabilistic inference, no model training, no learned weights.
+
+The confidence score (structural axis 0–60, evidence axis 0–40, combined total
+→ :high/:moderate/:low) is a rule-based point accumulation, not a calibrated
+probabilistic estimate.
 
 ## Blackboard / Knowledge Source Architecture
 

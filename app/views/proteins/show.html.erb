@@ -1,4 +1,10 @@
 <main class="inspection-container">
+  <p class="inspection-context">
+    Structural and annotation context for <strong><%= @protein.gene_symbol %></strong>
+    (<%= @protein.uniprot_accession %>). Variants are evaluated by checking whether
+    each residue position falls inside these domain and structure intervals.
+  </p>
+
   <header class="inspection-page-header">
     <h1>Protein <%= @protein.uniprot_accession %></h1>
     <p>

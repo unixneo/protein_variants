@@ -8,7 +8,7 @@
 
 ## Abstract
 
-This paper describes a controlled experiment in LLM-assisted scientific software development. The central question is: can a deterministic system built primarily using large language models produce scientifically valid results when evaluated against peer-reviewed experimental data?
+This paper describes a controlled experiment in LLM-assisted scientific software development. The central question is: can a rule-based structural evidence lookup engine built primarily using large language models produce outputs that are consistent with peer-reviewed experimental data?
 
 The experimental vehicle is a small, deterministic software system for interpreting missense variants in the TP53 tumor suppressor protein. The system follows a blackboard architecture in which independent Knowledge Sources (KSs) contribute structural and functional annotations from curated external databases. Variant interpretation is rule-based and fully inspectable, with no probabilistic or machine learning inference. We evaluate the system against five benchmark TP53 missense variants using functional scores from two MaveDB score sets (Giacomelli et al. 2018, Kotler et al. 2018) and clinical classifications from ClinVar. All five variants are correctly classified as residing in a structured functional region, with 100% agreement across both MaveDB score sets and ClinVar.
 
@@ -34,13 +34,15 @@ This makes TP53 an ideal test domain: the science is well-characterized, the val
 
 ### 1.3 System Approach
 
-We build the smallest deterministic system that can:
+The system uses no probabilistic or ML-based variant effect prediction. It is not a
+classifier. It is a rule-based lookup engine that asks two questions about each variant:
 
-1. Map a variant to its structural and functional context using curated data
-2. Apply explicit rules to generate an interpretation
-3. Compare that interpretation against peer-reviewed experimental evidence
+1. Does the residue position fall inside a curated functional domain annotation?
+2. Does the residue position fall inside an experimentally resolved PDB structure?
 
-The system uses no probabilistic or ML-based variant effect prediction. Every step is inspectable and traceable to its data source.
+The binary result of those two lookups is passed through deterministic rules to produce
+a mechanism label and confidence score, then compared against peer-reviewed evidence
+to measure agreement. Every step is inspectable and traceable to its source database.
 
 ---
 
