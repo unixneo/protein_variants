@@ -339,6 +339,35 @@ https://community.unix.com/t/claude-sonnet-4-5-includes-ai-safety-level-3-asl-3-
 
 ---
 
+## 25. Test Database Isolation Failure (before(:all) with Transactional Fixtures)
+
+**Error**
+Instructed Codex to use before(:all) in an RSpec integration spec, which committed
+data to the test SQLite database outside the per-example transaction boundary.
+
+**What happened**
+intermediate_variants_spec.rb used before(:all) { Tp53FixtureImporter.call } to
+load P04637 into the test DB. With use_transactional_fixtures = true, per-example
+transactions roll back cleanly -- but before(:all) runs outside that boundary and
+commits permanently. The P04637 record persisted across the entire test suite run,
+causing 27 failures with "Uniprot accession has already been taken" in every spec
+that attempted Protein.create!(uniprot_accession: 'P04637').
+
+Changing before(:all) to before did not immediately fix the failures because the
+dirty record was already committed to storage/test.sqlite3. The fix required
+deleting the test database file and reloading the schema:
+  rm storage/test.sqlite3 && bin/rails db:schema:load RAILS_ENV=test
+
+**Correct rule going forward**
+> Never use before(:all) in RSpec when use_transactional_fixtures = true and the
+> setup involves ActiveRecord writes. Use before (per-example) instead. The
+> fixture importer is idempotent and SQLite is fast -- per-example setup is safe.
+> If a test database becomes dirty from a before(:all) escape, delete the SQLite
+> file and reload the schema rather than attempting db:schema:load on a live file
+> with FK constraints.
+
+---
+
 ## Operating Rules Going Forward
 
 1. Follow the stated architecture exactly

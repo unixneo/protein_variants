@@ -70,13 +70,18 @@ SQLite databases as scientific artifacts:
 
 All five benchmark variants are loaded with full external evidence:
 
-| Variant | MaveDB Score | ClinVar | Review Status |
+| Variant | MaveDB Score (Giacomelli/Kotler) | ClinVar | Review Status |
 |---|---|---|---|
 | p.Arg175His | 1.025 | Pathogenic | Expert panel |
 | p.Gly245Ser | 0.772 | Pathogenic | No assertion criteria |
 | p.Arg248Gln | 0.812 | Pathogenic | No assertion criteria |
 | p.Arg273His | 1.221 | Pathogenic | Expert panel |
 | p.Tyr220Cys | 1.102 | Likely pathogenic | Expert panel |
+| p.Val143Leu | 0.328 / 0.589 | Uncertain significance | No assertion criteria |
+| p.Arg181Asn | 0.581 / 0.395 | Not in ClinVar | - |
+| p.Arg290Pro | 0.249 / 0.348 | Uncertain significance | Single submitter |
+| p.Leu299Ser | 0.357 / 0.333 | Not in ClinVar | - |
+| p.Met1Asn   | 0.309 / 0.248 | Not in ClinVar | - |
 
 ## Status
 
@@ -96,7 +101,8 @@ Current capabilities:
 - `Mavedb::Score` and `Clinvar::Classification` models with populated data
 - Standalone fetch scripts for RCSB, MaveDB, and ClinVar APIs
 - Dark card-based inspection UI: home, proteins index/show, variant show with full evidence and confidence cards
-- 67 RSpec examples, 0 failures
+- 90 RSpec examples, 0 failures
+- Phase 5 complete: 5 intermediate/uncertain TP53 variants added, all four interpretation branches now exercised
 
 Next:
 - Extend benchmark set to variants with intermediate or uncertain functional classification

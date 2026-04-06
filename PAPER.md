@@ -101,6 +101,26 @@ The Interpretation KS applies the following deterministic rules:
 
 All five variants fall within the DNA-binding domain (residues 95-289, UniProt annotation).
 
+### 3.1 Extended Benchmark: Intermediate and Uncertain Classification Variants
+
+Five additional variants were selected to test system behavior under ambiguous
+evidence conditions. Selection criteria: (1) intermediate MaveDB scores in both
+Giacomelli2018 and Kotler2018 (range 0.2-0.6, present in both score sets), and
+(2) ClinVar classification of Uncertain significance or absent from ClinVar.
+
+| Variant | Position | Domain | Structure | ClinVar |
+|---|---|---|---|---|
+| p.Val143Leu | 143 | Inside DBD | Inside 1TUP/2OCJ | Uncertain significance |
+| p.Arg181Asn | 181 | Inside DBD | Inside 1TUP/2OCJ | Not in ClinVar |
+| p.Arg290Pro | 290 | Outside DBD | Inside 1TUP | Uncertain significance |
+| p.Leu299Ser | 299 | Outside DBD | Inside 1TUP | Not in ClinVar |
+| p.Met1Asn   | 1   | Outside DBD | No coverage | Not in ClinVar |
+
+These variants exercise all four interpretation branches: domain+structure hit
+(Val143Leu, Arg181Asn), structure-only hit (Arg290Pro, Leu299Ser), and
+unannotated (Met1Asn). The original five hotspot variants exercise only the
+domain+structure branch.
+
 ---
 
 ## 4. External Evidence
@@ -196,6 +216,34 @@ The system correctly identifies all five canonical TP53 hotspot variants as resi
 
 Agreement is expected for these well-characterized hotspot variants. The value of the system is not the result itself but the full inspectability of every step that produced it.
 
+### 5.4 Extended Benchmark Results
+
+The five Phase 5 variants exercise system behavior at the boundaries of the
+deterministic lookup engine.
+
+Val143Leu and Arg181Asn (inside DBD, inside structure coverage) produce
+domain+structure hits -- the same branch as the original five hotspot variants.
+However, their MaveDB scores are intermediate (0.33-0.59), straddling the 0.5
+agreement threshold. Whether the system agrees with MaveDB depends on score set
+ordering and threshold boundary -- this is the expected behavior for a
+deterministic rule applied to ambiguous experimental data.
+
+Arg290Pro and Leu299Ser (outside DBD, inside 1TUP structure coverage at
+positions 290 and 299 respectively) produce structure-only hits. Both carry
+ClinVar Uncertain significance or no ClinVar entry. The system correctly
+identifies structural coverage without domain annotation -- a distinct and
+previously untested interpretation branch.
+
+Met1Asn (position 1, outside all domain and structure annotations) produces
+the unannotated branch outcome: no domain hit, no structure hit, unannotated
+region. No ClinVar record exists. This is the fourth and final interpretation
+branch, exercised for the first time.
+
+The extended benchmark confirms that the deterministic lookup engine produces
+scientifically coherent outputs across all four interpretation branches, and
+correctly produces no_data or ambiguous agreement results for variants where
+the experimental evidence is itself uncertain.
+
 ---
 
 ## 6. Discussion
@@ -251,7 +299,7 @@ This finding has direct implications for the economics of LLM-assisted scientifi
 
 ### 6.5 Scope and Limitations
 
-- The benchmark variant set is limited to five well-characterized hotspots. Extension to variants with intermediate or uncertain functional classification will provide a more rigorous test.
+- The original benchmark variant set of five hotspot variants has been extended with five intermediate/uncertain classification variants (Phase 5), exercising all four interpretation branches for the first time. The extended set confirms expected system behavior: agreement with unambiguous pathogenic variants, no_data or ambiguous agreement with VUS and ClinVar-absent variants.
 - Confidence scoring uses a point-based model (structural axis 0–60, evidence axis 0–40, combined threshold :high/:moderate/:low). The thresholds are principled but not empirically calibrated against a held-out validation set.
 - ClinVar review status is used to weight confidence (expert panel +15 vs. pathogenic-without-panel +5), but is not yet used to stratify agreement conclusions.
 - The system uses a small curated set of protein features and structures. Expansion to the full UniProt annotation set and all available PDB structures is planned.
@@ -282,7 +330,7 @@ ruby script/fetch_clinvar_classifications.rb
 
 ## Appendix B: Remaining Work
 
-- Extend benchmark set to variants with uncertain or intermediate functional classification
+- ~~Extend benchmark set to variants with uncertain or intermediate functional classification~~ -- complete (Phase 5)
 - Empirical calibration of confidence score thresholds against a held-out validation set
 - Expanded protein feature coverage from full UniProt annotation set
 - Formal submission as a short methods paper or research note

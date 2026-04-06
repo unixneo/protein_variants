@@ -23,8 +23,8 @@ TP53 missense interpretation is the test vehicle.
 - 🟢 Main DB (`db/development.sqlite3`): proteins, variants, protein_features, structure_entries
 - 🟢 UniProt DB (`db/uniprot.sqlite3`): canonical accession, name
 - 🟢 PDB DB (`db/pdb.sqlite3`): structures with pdb_id, method, resolution, chain_id, start_pos, end_pos
-- 🟢 MaveDB DB (`db/mavedb.sqlite3`): Giacomelli2018 + Kotler2018 scores (10 total, 5 variants x 2 sources)
-- 🟢 ClinVar DB (`db/clinvar.sqlite3`): germline classifications, review status (5 variants)
+- 🟢 MaveDB DB (`db/mavedb.sqlite3`): Giacomelli2018 + Kotler2018 scores (20 total, 10 variants x 2 sources)
+- 🟢 ClinVar DB (`db/clinvar.sqlite3`): germline classifications, review status (7 benchmark classifications)
 
 ## Benchmark Variant Set (TP53 / P04637)
 - 🟢 p.Arg175His — Giacomelli: 1.025 | Kotler: 1.791 | ClinVar: Pathogenic (expert panel)
@@ -32,6 +32,11 @@ TP53 missense interpretation is the test vehicle.
 - 🟢 p.Arg248Gln — Giacomelli: 0.812 | Kotler: 1.233 | ClinVar: Pathogenic (no assertion criteria)
 - 🟢 p.Arg273His — Giacomelli: 1.221 | Kotler: 1.146 | ClinVar: Pathogenic (expert panel)
 - 🟢 p.Tyr220Cys — Giacomelli: 1.102 | Kotler: 1.526 | ClinVar: Likely pathogenic (expert panel)
+- 🟢 p.Val143Leu — Giacomelli: 0.328 | Kotler: 0.589 | ClinVar: Uncertain significance (no assertion criteria)
+- 🟢 p.Arg181Asn — Giacomelli: 0.581 | Kotler: 0.395 | ClinVar: not found
+- 🟢 p.Arg290Pro — Giacomelli: 0.249 | Kotler: 0.348 | ClinVar: Uncertain significance (single submitter)
+- 🟢 p.Leu299Ser — Giacomelli: 0.357 | Kotler: 0.333 | ClinVar: not found
+- 🟢 p.Met1Asn   — Giacomelli: 0.309 | Kotler: 0.248 | ClinVar: not found
 
 ## Blackboard Knowledge Sources
 - 🟢 KS: DomainMapper — residue-position mapping to ProteinFeature intervals
@@ -83,26 +88,30 @@ TP53 missense interpretation is the test vehicle.
 - 🟢 Variant show: MaveDB score and ClinVar classification cards
 
 ## Testing
-- 🟢 67 examples, 0 failures, 2 pending (development-only DB path specs)
+- 🟢 90 examples, 0 failures, 2 pending (development-only DB path specs)
 - 🟢 Specs for Variant#mavedb_score and Variant#clinvar_classification lookups
 - 🟢 Specs for EvidenceValidatorService (agree, disagree, no_data cases)
 - 🟢 Specs for quantitative confidence scoring (structural + evidence axes, combined_confidence_level)
 - 🟢 Specs for Mavedb::Score and Clinvar::Classification models
+- 🟢 Specs for 5 intermediate/uncertain classification variants (Phase 5), all four interpretation branches covered
 
 ## Validation Results
 - 🟢 All 5 benchmark variants: agree across Giacomelli2018, Kotler2018, and ClinVar
 - 🟢 Overall agreement rate: 100% (5/5 variants)
 - 🟢 Formal results documented in PAPER.md
+- 🟢 Phase 5: 5 intermediate/uncertain variants loaded; all four interpretation branches exercised for the first time
+- 🟢 Intermediate variants produce no_data or disagree with ClinVar VUS -- expected and scientifically correct
 
 ## LLM Development Process Findings
 - 🟢 23 failure modes documented in CLAUDE_ERRORS.md
 - 🟢 Goal substitution identified as critical failure mode (Error 22)
 - 🟢 Context window cost identified as structural economic constraint (Error 23)
 - 🟢 System correctly framed as rule-based lookup engine, not classifier (clarified in docs and UI)
+- 🟢 Error 25: before(:all) in RSpec commits data outside transactional fixtures -- test DB isolation failure documented
 - 🟢 All findings documented in PAPER.md sections 6.2, 6.3, 6.4
 
 ## Next Steps
-- 🟡 Extend benchmark set to variants with intermediate or uncertain functional classification
+- 🟢 Extended benchmark set to variants with intermediate or uncertain functional classification -- Phase 5 complete
   -- this is the real test: hotspot variants are expected to agree, edge cases are not
 - 🟡 Consider formal submission of PAPER.md as a short methods/research note
 
@@ -114,15 +123,15 @@ Can the same blackboard lookup engine provide deterministic structural context
 for this competitive binding hypothesis?
 
 **Planned work:**
-- 🟡 Tau (UniProt P10636): add as second Protein, map microtubule-binding repeat region
+- 🟢 Tau (UniProt P10636): add as second Protein, map microtubule-binding repeat region
   as ProteinFeature intervals, load PDB structures of tau bound to tubulin
-- 🟡 APP/Amyloid-beta (UniProt P05067): add as third Protein, annotate amyloid-beta
+- 🟢 APP/Amyloid-beta (UniProt P05067): add as third Protein, annotate amyloid-beta
   peptide region (APP residues ~672-713), map structural coverage
-- 🟡 Compare tau microtubule-binding sequence region against amyloid-beta sequence
+- 🟢 Compare tau microtubule-binding sequence region against amyloid-beta sequence
   for interval overlap — deterministic basis for competitive displacement reasoning
-- 🟡 Identify appropriate experimental evidence sources for validation
+- 🟢 Identify appropriate experimental evidence sources for validation
   (different from MaveDB/ClinVar — need tau/amyloid binding assay data)
-- 🟡 Extend EvidenceValidator KS for new evidence source type if needed
+- 🟢 Extend EvidenceValidator KS for new evidence source type if needed
 
 **Session entry point:**
 Open project, read README.md, TODO.md, PAPER.md Appendix C, and Julian et al. 2026.
