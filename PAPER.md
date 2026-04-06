@@ -12,7 +12,7 @@ This paper describes a controlled experiment in LLM-assisted scientific software
 
 The experimental vehicle is a small, deterministic software system for interpreting missense variants in the TP53 tumor suppressor protein. The system follows a blackboard architecture in which independent Knowledge Sources (KSs) contribute structural and functional annotations from curated external databases. Variant interpretation is rule-based and fully inspectable, with no probabilistic or machine learning inference. We evaluate the system against five benchmark TP53 missense variants using functional scores from two MaveDB score sets (Giacomelli et al. 2018, Kotler et al. 2018) and clinical classifications from ClinVar. All five variants are correctly classified as residing in a structured functional region, with 100% agreement across both MaveDB score sets and ClinVar.
 
-The system was built using a two-stage workflow: Claude (Anthropic) served as architect, scientist, and prompt author; Codex CLI served as code implementer. Documented failure modes and corrective operating rules are maintained as a project artifact (CLAUDE_ERRORS.md). The development process itself is part of the research record.
+The system was built using a two-stage workflow: Claude (Anthropic) served as architect, scientist, and prompt author; Codex CLI served as code implementer. Development began with ChatGPT (OpenAI) as the primary LLM collaborator. After fifteen documented failure modes -- including repeated architecture drift, goal substitution, and inability to maintain step-ordering discipline -- the project was transferred to Claude. The ChatGPT phase failures are preserved in CHATGPT_ERRORS.md as part of the experiment record. Documented failure modes and corrective operating rules are maintained as a project artifact (CLAUDE_ERRORS.md). The development process itself is part of the research record.
 
 ---
 
@@ -23,6 +23,8 @@ The system was built using a two-stage workflow: Claude (Anthropic) served as ar
 This project addresses a direct question about LLM-assisted scientific software development: can a system built primarily using LLMs produce outputs that are scientifically valid when measured against peer-reviewed experimental data?
 
 The answer is not obvious. LLMs are known to drift from stated objectives, hallucinate solutions, and lose constraint tracking across iterative sessions. If these failure modes are allowed to propagate unchecked into a scientific software system, the outputs may appear technically correct while being scientifically wrong. The discipline required to prevent this -- validation-first development, explicit knowledge source decomposition, data-before-code engineering order -- is difficult to maintain under LLM-assisted development pressure.
+
+This project involved two LLM collaborators across its development lifecycle. The initial phase used ChatGPT (OpenAI) as the primary engineering partner. That phase produced fifteen documented failure modes (CHATGPT_ERRORS.md), including repeated architecture drift, premature infrastructure build-out ahead of scientific specification, failure to maintain step-ordering discipline, and inability to track long-term constraints across sessions. The project was not completed under ChatGPT and was transferred to Claude (Anthropic). The Claude phase produced twenty-five additional documented failure modes (CLAUDE_ERRORS.md) but reached full system completion. Both failure logs are part of the research record. The comparison is not a controlled benchmark -- the two LLMs were used under different workflow conditions and at different stages of project maturity. It is, however, an honest account of what happened.
 
 This paper documents both the system and the process used to build it.
 
@@ -256,7 +258,9 @@ For this test case -- five canonical TP53 hotspot variants evaluated against two
 
 ### 6.2 Development Process Observations
 
-The system was built using a two-stage workflow: Claude as architect and prompt author, Codex as implementer. Twenty-two documented failure modes were identified and recorded during development (CLAUDE_ERRORS.md). Key patterns:
+The system was built across two LLM phases. The first phase used ChatGPT as the primary LLM collaborator. Fifteen failure modes were documented (CHATGPT_ERRORS.md) before the project was transferred. Key ChatGPT failure patterns: architecture drift (repeated failure to follow the stated multi-SQLite design), infrastructure leading the science (building Rails layers before defining the scientific workflow), and step-ordering indiscipline (jumping ahead to future steps without completing current ones). The project was not finished under ChatGPT.
+
+The second phase used Claude as architect, scientist, and prompt author, with Codex CLI as code implementer. Twenty-five failure modes were documented during the Claude phase (CLAUDE_ERRORS.md). The system reached full completion under this workflow.
 
 - LLMs drift from stated architecture when not explicitly constrained at each step
 - API attribute names and field paths must be verified with real data before any code is written -- LLMs will confidently specify wrong paths
@@ -303,6 +307,39 @@ This finding has direct implications for the economics of LLM-assisted scientifi
 - Confidence scoring uses a point-based model (structural axis 0–60, evidence axis 0–40, combined threshold :high/:moderate/:low). The thresholds are principled but not empirically calibrated against a held-out validation set.
 - ClinVar review status is used to weight confidence (expert panel +15 vs. pathogenic-without-panel +5), but is not yet used to stratify agreement conclusions.
 - The system uses a small curated set of protein features and structures. Expansion to the full UniProt annotation set and all available PDB structures is planned.
+
+### 6.6 Two-LLM Development History
+
+This project is unusual in that it involved two distinct LLM collaborators
+at different stages, with a documented handoff between them.
+
+The ChatGPT phase preceded this paper. It produced a partially built system
+with fifteen documented failure modes and did not reach completion. The
+failure modes were primarily process failures: inability to follow stated
+architecture, premature expansion beyond the current task, and loss of
+scientific framing under iterative pressure. The partially built system was
+the starting point for the Claude phase.
+
+The Claude phase completed the system. It produced twenty-five additional
+failure modes, including two that are particularly relevant to LLM-assisted
+scientific development: goal substitution (Error 22, where Claude rewrote
+the primary research objective when updating documentation) and context
+window cost as an economic constraint (Error 23).
+
+The cumulative failure log -- forty failure modes across two LLMs -- is the
+most direct evidence this project offers about the current state of
+LLM-assisted scientific software development. Neither LLM operated without
+error. Both required persistent human oversight to keep the system aligned
+with its stated scientific objective. The difference was that one reached
+completion and the other did not.
+
+This finding should be interpreted carefully. The two LLMs were not tested
+under controlled conditions. ChatGPT was used earlier in the project when
+requirements were less settled; Claude was used on a more mature codebase
+with clearer constraints. Workflow differences, prompt style, and project
+maturity all vary. What can be said without overinterpretation: under the
+conditions of this project, the Claude-based workflow produced a complete,
+validated system; the ChatGPT-based workflow did not.
 
 ---
 
