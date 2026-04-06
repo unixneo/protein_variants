@@ -7,16 +7,17 @@
         results when compared to peer-reviewed experimental data?
       </p>
       <p>
-        This application processes public protein variant data for TP53 (UniProt P04637)
-        using a blackboard architecture with four knowledge sources: DomainMapper,
-        StructureMapper, Interpretation, and EvidenceValidator. It then compares its
-        classification output against two independent peer-reviewed evidence sources:
-        MaveDB functional scores (Giacomelli 2018, Kotler 2018) and ClinVar germline
-        classifications.
+        This application processes public protein variant data using a blackboard
+        architecture with four knowledge sources: DomainMapper, StructureMapper,
+        Interpretation, and EvidenceValidator. Phase 1-3 validated the system against
+        TP53 (UniProt P04637) using MaveDB functional scores and ClinVar germline
+        classifications. Phase 4 extended the architecture to tau (P10636) and
+        APP/amyloid-beta (P05067) to provide structural context for the competitive
+        microtubule binding hypothesis (Julian et al. 2026).
       </p>
     <% end %>
 
-    <%= render layout: "shared/card", locals: { title: "Benchmark Results" } do %>
+    <%= render layout: "shared/card", locals: { title: "Phase 1-3: TP53 Benchmark Results" } do %>
       <table class="inspection-table">
         <thead>
           <tr>
@@ -38,6 +39,34 @@
       <p style="margin-top: 0.75rem;">
         Overall agreement rate: <strong>100% (5/5 variants)</strong> across MaveDB and ClinVar.
       </p>
+    <% end %>
+
+    <%= render layout: "shared/card", locals: { title: "Phase 4: Tau and APP/Amyloid-Beta (Julian et al. 2026)" } do %>
+      <p>
+        Extension to the competitive microtubule binding hypothesis. No MaveDB or ClinVar
+        evidence available; structural axis only. Negative controls (R406W, Swedish, London)
+        confirm the system discriminates variants outside the binding region.
+      </p>
+      <table class="inspection-table">
+        <thead>
+          <tr>
+            <th>Protein</th>
+            <th>Variant</th>
+            <th>Literature name</th>
+            <th>Domain hit</th>
+            <th>Structure hit</th>
+            <th>Str. score</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>MAPT</td><td>p.Pro619Leu</td><td>P301L</td><td>Yes</td><td>Yes</td><td>50</td></tr>
+          <tr><td>MAPT</td><td>p.Pro619Ser</td><td>P301S</td><td>Yes</td><td>Yes</td><td>50</td></tr>
+          <tr><td>MAPT</td><td>p.Arg724Trp</td><td>R406W</td><td>No</td><td>No</td><td>0</td></tr>
+          <tr><td>APP</td><td>p.Ala692Gly</td><td>Arctic</td><td>Yes</td><td>Yes</td><td>50</td></tr>
+          <tr><td>APP</td><td>p.Lys670Asn</td><td>Swedish</td><td>No</td><td>No</td><td>0</td></tr>
+          <tr><td>APP</td><td>p.Val717Ile</td><td>London</td><td>No</td><td>No</td><td>0</td></tr>
+        </tbody>
+      </table>
     <% end %>
 
     <%= render layout: "shared/card", locals: { title: "Architecture" } do %>
@@ -62,6 +91,10 @@
     <%= render layout: "shared/card", locals: { title: "Utilities" } do %>
       <p class="inspection-lead">Run built-in local fixture import tasks.</p>
       <%= button_to "Import TP53 Fixture", import_tp53_fixture_path, method: :post, class: "inspection-button" %>
+      <p style="margin-top: 0.5rem; font-size: 0.85rem;">
+        Tau and APP fixtures: <code>bin/rails protein_variants:import_tau</code> /
+        <code>bin/rails protein_variants:import_app</code>
+      </p>
     <% end %>
 
   </section>
