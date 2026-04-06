@@ -309,6 +309,36 @@ Claude does not proactively manage context size. It reads files when asked witho
 
 ---
 
+## 24. ASL-3 CBRN False Positive on Legitimate Neuroscience Research
+
+**Severity: Structural / Safety System**
+
+**Error**
+Claude Sonnet 4.5 blocked a chat session mid-work on this project, invoking ASL-3 CBRN safety filters. The block was a false positive. The project is a deterministic structural evidence lookup engine over public UniProt and PDB data with no connection to weapons, pathogens, or dual-use research.
+
+**What happened**
+- During Phase 4 work extending the blackboard architecture to tau (P10636) and APP/amyloid-beta (P05067), Claude blocked a message and displayed an ASL-3 safety warning
+- The warning cited protections against CBRN (chemical, biological, radiological, nuclear) weapons misuse
+- The project is a Rails application fetching public protein annotation data from UniProt and RCSB PDB and comparing deterministic rule-based outputs against MaveDB and ClinVar
+- The scientific context is Alzheimer's disease research, specifically the Julian et al. 2026 competitive binding hypothesis (PNAS Nexus, doi:10.1093/pnasnexus/pgag034)
+- The project is fully public on GitHub: https://github.com/unixneo/protein_variants
+- The user submitted feedback to Anthropic as requested by the block message
+- Anthropic's own support documentation acknowledges: "These filters are still being refined and they may sometimes inadvertently flag normal content"
+
+**Likely trigger**
+The combination of protein biochemistry terminology -- amyloid-beta, microtubule binding, competitive displacement, tau -- was pattern-matched against biosecurity classifiers. These terms have no weapons relevance. They describe canonical neurodegenerative disease biology covered in any undergraduate biochemistry course and published in open-access peer-reviewed journals.
+
+**Why this matters for LLM-assisted scientific development**
+This failure mode is structural, not incidental. Biomedical research routinely involves terminology that overlaps with biosecurity concern categories: protein interactions, binding affinities, cellular mechanisms, disease pathology. A safety classifier tuned for dual-use risk will produce false positives in legitimate neuroscience, oncology, virology, and pharmacology workflows. For a researcher using Claude as an engineering and scientific collaborator, an unexpected mid-session block is disruptive, unexplained in the moment, and creates uncertainty about whether the project can be continued.
+
+**Documented at**
+https://community.unix.com/t/claude-sonnet-4-5-includes-ai-safety-level-3-asl-3-protections-designed-to-prevent-misuse-related-to-chemical-biological-radiological-and-nuclear-cbrn-weapons/397473
+
+**Correct rule going forward**
+> If a session is blocked by a safety filter during legitimate scientific work, start a new session with a fresh context framing the project scope explicitly at the outset: public data sources, deterministic lookup engine, no dual-use relevance. Do not attempt to rephrase blocked content to avoid the filter -- that is the wrong response to a false positive. Submit feedback to Anthropic via the mechanism provided in the block message.
+
+---
+
 ## Operating Rules Going Forward
 
 1. Follow the stated architecture exactly
