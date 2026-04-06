@@ -8,7 +8,9 @@ VARIANTS = {
   "p.Gly245Ser" => "12385",
   "p.Arg248Gln" => "12386",
   "p.Arg273His" => "12392",
-  "p.Tyr220Cys" => "12375"
+  "p.Tyr220Cys" => "12375",
+  "p.Val143Leu" => "2687704",
+  "p.Arg290Pro" => "458572"
 }.freeze
 
 DB_PATH = "db/clinvar.sqlite3"

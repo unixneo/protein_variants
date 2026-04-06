@@ -13,7 +13,12 @@ TARGET_HGVS = [
   "p.Gly245Ser",
   "p.Arg248Gln",
   "p.Arg273His",
-  "p.Tyr220Cys"
+  "p.Tyr220Cys",
+  "p.Val143Leu",
+  "p.Arg181Asn",
+  "p.Arg290Pro",
+  "p.Leu299Ser",
+  "p.Met1Asn"
 ].freeze
 
 db = SQLite3::Database.new(DB_PATH)

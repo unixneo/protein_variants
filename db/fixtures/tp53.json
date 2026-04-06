@@ -71,6 +71,36 @@
       "residue_position": 220,
       "ref_aa": "Y",
       "alt_aa": "C"
+    },
+    {
+      "hgvs_protein": "p.Val143Leu",
+      "residue_position": 143,
+      "ref_aa": "V",
+      "alt_aa": "L"
+    },
+    {
+      "hgvs_protein": "p.Arg181Asn",
+      "residue_position": 181,
+      "ref_aa": "R",
+      "alt_aa": "N"
+    },
+    {
+      "hgvs_protein": "p.Arg290Pro",
+      "residue_position": 290,
+      "ref_aa": "R",
+      "alt_aa": "P"
+    },
+    {
+      "hgvs_protein": "p.Leu299Ser",
+      "residue_position": 299,
+      "ref_aa": "L",
+      "alt_aa": "S"
+    },
+    {
+      "hgvs_protein": "p.Met1Asn",
+      "residue_position": 1,
+      "ref_aa": "M",
+      "alt_aa": "N"
     }
   ]
 }

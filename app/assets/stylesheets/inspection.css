@@ -68,6 +68,18 @@
   background: #10151d;
 }
 
+.inspection-card__header--flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.inspection-card__header-action {
+  font-size: 0.82rem;
+  white-space: nowrap;
+}
+
 .inspection-card__title {
   margin: 0;
   font-size: 0.95rem;
