@@ -17,18 +17,25 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body class="inspection-body">
-    <nav class="inspection-nav">
-      <span class="inspection-nav__title">protein_variants</span>
-      <span class="inspection-nav__sub">
-        Deterministic TP53 variant interpretation · LLM-assisted scientific software experiment
-      </span>
-      <%= link_to "Home", root_path, class: "inspection-nav__link" %>
-      <%= link_to "Proteins", proteins_path, class: "inspection-nav__link" %>
-    </nav>
-    <% flash.each do |key, message| %>
-      <div class="inspection-flash inspection-flash--<%= key %>"><%= message %></div>
-    <% end %>
-    <%= yield %>
+  <body>
+    <div class="layout">
+      <aside class="sidebar">
+        <div class="logo">Protein Variants</div>
+        <p class="logo-sub">Deterministic TP53 variant interpretation experiment</p>
+
+        <section class="nav-section">
+          <div class="nav-section-title">Navigation</div>
+          <%= link_to "Home", root_path, class: "nav-link #{'active' if current_page?(root_path)}" %>
+          <%= link_to "Proteins", proteins_path, class: "nav-link #{'active' if current_page?(proteins_path)}" %>
+        </section>
+      </aside>
+
+      <main class="main">
+        <% flash.each do |key, message| %>
+          <div class="inspection-flash inspection-flash--<%= key %>"><%= message %></div>
+        <% end %>
+        <%= yield %>
+      </main>
+    </div>
   </body>
 </html>
